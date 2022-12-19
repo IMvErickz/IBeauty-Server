@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Cliente {
+  CPF   String @id @unique @default(cuid())
+  Nome  String
+  email String @unique
+  senha String
+}
+
+model Prestador {
+  CNPJ  String @id @unique @default(cuid())
+  Nome  String
+  email String @unique
+  Senha String
+
+  servicos Servico[]
+}
+
+model Servico {
+  id          Int    @id @unique @default(autoincrement())
+  NomeServico String
+  preco       Float
+  descricao   String
+  img         String
+
+  servicoId String
+
+  prestador Prestador @relation(fields: [servicoId], references: [CNPJ])
+
+  categoria Categoria[]
+}
+
+model Categoria {
+  id            Int    @id @unique @default(autoincrement())
+  nomeCategoria String @unique
+  descricao     String
+  servicoId     Int
+
+  servico Servico @relation(fields: [servicoId], references: [id])
+}
+
+model Agenda {
+  id      Int      @id @unique @default(autoincrement())
+  horario DateTime
+  dia     Int
+
+  agendaId Int
+
+  adendado Agendado @relation(fields: [agendaId], references: [id])
+}
+
+model AgendaStatus {
+  id         Int    @id @unique @default(autoincrement())
+  nomeStatus String @unique
+  descricao  String
+
+  statusId Int
+
+  agendado Agendado @relation(fields: [statusId], references: [id])
+}
+
+model Agendado {
+  id       Int @id @unique @default(autoincrement())
+  agendaId Int
+
+  status AgendaStatus[]
+
+  agenda Agenda[]
+}
+
+model Produtos {
+  id          Int    @id @unique @default(autoincrement())
+  nomeProduto String
+  preco       Float
+  descricao   String
+}
