@@ -27,7 +27,7 @@ model Prestador {
 }
 
 model Servico {
-  id          Int    @id @unique @default(autoincrement())
+  id          String @id @unique @default(cuid())
   NomeServico String
   preco       Float
   descricao   String
@@ -41,36 +41,36 @@ model Servico {
 }
 
 model Categoria {
-  id            Int    @id @unique @default(autoincrement())
-  nomeCategoria String @unique
+  id            String  @id @unique @default(cuid())
+  nomeCategoria String  @unique
   descricao     String
-  servicoId     Int
+  servicoId     String?
 
-  servico Servico @relation(fields: [servicoId], references: [id])
+  servico Servico? @relation(fields: [servicoId], references: [id])
 }
 
 model Agenda {
-  id      Int      @id @unique @default(autoincrement())
+  id      String   @id @unique @default(cuid())
   horario DateTime
   dia     Int
 
-  agendaId Int
+  agendaId String
 
   adendado Agendado @relation(fields: [agendaId], references: [id])
 }
 
 model AgendaStatus {
-  id         Int    @id @unique @default(autoincrement())
+  id         String @id @unique @default(cuid())
   nomeStatus String @unique
   descricao  String
 
-  statusId Int
+  statusId String
 
   agendado Agendado @relation(fields: [statusId], references: [id])
 }
 
 model Agendado {
-  id       Int @id @unique @default(autoincrement())
+  id       String @id @unique @default(cuid())
   agendaId Int
 
   status AgendaStatus[]
@@ -79,7 +79,7 @@ model Agendado {
 }
 
 model Produtos {
-  id          Int    @id @unique @default(autoincrement())
+  id          String @id @unique @default(cuid())
   nomeProduto String
   preco       Float
   descricao   String
