@@ -1,5 +1,4 @@
 import {FastifyInstance} from 'fastify'
-import { get } from 'https'
 import { z } from 'zod'
 import {prisma} from '../lib/prisma'
 

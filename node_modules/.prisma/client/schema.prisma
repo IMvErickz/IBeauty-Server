@@ -51,12 +51,12 @@ model Categoria {
 
 model Agenda {
   id      String   @id @unique @default(cuid())
-  horario DateTime
-  dia     Int
+  horario DateTime @db.Time()
+  dia     DateTime @db.Date()
 
   agendaId String
 
-  adendado Agendado @relation(fields: [agendaId], references: [id])
+  agendado Agendado @relation(fields: [agendaId], references: [id])
 }
 
 model AgendaStatus {
@@ -70,8 +70,8 @@ model AgendaStatus {
 }
 
 model Agendado {
-  id       String @id @unique @default(cuid())
-  agendaId Int
+  id         String @id @unique @default(cuid())
+  agendadoId Int
 
   status AgendaStatus[]
 
