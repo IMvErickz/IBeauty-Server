@@ -1,13 +1,13 @@
 import {FastifyInstance} from 'fastify'
 import { z } from 'zod'
-import {prisma} from '../lib/prisma'
+import { prisma } from '../lib/prisma'
+import {randomUUID} from 'node:crypto'
 
 export async function RegisterService(fastify: FastifyInstance) {
 
     fastify.post('/registerService', async (request, reply) => {
 
         const createService = z.object({
-            id: z.string(),
             NomeServico: z.string(),
             preco: z.number(),
             descricao: z.string(),
@@ -15,12 +15,12 @@ export async function RegisterService(fastify: FastifyInstance) {
             servicoId: z.string(),
         })
 
-        const { id, NomeServico, preco, descricao, img, servicoId } = createService.parse(request.body)
+        const { NomeServico, preco, descricao, img, servicoId } = createService.parse(request.body)
         
         try {
             await prisma.servico.create({
                 data: {
-                    id,
+                    id: randomUUID(),
                     NomeServico,
                     preco,
                     descricao,

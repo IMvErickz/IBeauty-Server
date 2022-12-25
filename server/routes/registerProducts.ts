@@ -2,7 +2,7 @@ import {FastifyInstance} from 'fastify'
 import { z } from 'zod'
 import {prisma} from '../lib/prisma'
 
-export function RegisterProducts(fastify: FastifyInstance) {
+export async function RegisterProducts(fastify: FastifyInstance) {
     fastify.post('/createProduct', async (request, reply) => {
         const createProduct = z.object({
             id: z.string(),
