@@ -1,18 +1,21 @@
 import {FastifyInstance} from 'fastify'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
-import {randomUUID} from 'node:crypto'
+import { randomUUID } from 'node:crypto'
+
+  
 
 export async function RegisterSchedule(fastify: FastifyInstance) {
-    fastify.post('/createSchedule', async (request, reply) => {
-        const createSchedule = z.object({
-        horario: z.date(),
+
+    const createSchedule = z.object({
+        horario: z.string(),
         dia: z.string(),
-        agendaId: z.string()
-        
     })
 
-        const { horario, dia, agendaId } = createSchedule.parse(request.body)
+    fastify.post('/createSchedule', async (request, reply) => {
+       
+
+        const { horario, dia } = createSchedule.parse(request.body)
         
         try {
             await prisma.agenda.create({
@@ -20,7 +23,7 @@ export async function RegisterSchedule(fastify: FastifyInstance) {
                     id: randomUUID(),
                     horario,
                     dia,
-                    agendaId
+                    agendaId: randomUUID()
                 }
             })
         } catch (error) {
@@ -36,12 +39,14 @@ export async function RegisterSchedule(fastify: FastifyInstance) {
         return {getAllSchedule}
     })
 
-    fastify.post('/createStatus', async (request, reply) => {
-        const createStatus = z.object({
+    const createStatus = z.object({
             nomeStatus: z.string(),
             descricao: z.string(),
             statusId: z.string(),
         })
+
+    fastify.post('/createStatus', async (request, reply) => {
+        
 
         const { nomeStatus, descricao, statusId} = createStatus.parse(request.body)
 
@@ -59,5 +64,49 @@ export async function RegisterSchedule(fastify: FastifyInstance) {
         }
 
         return reply.status(201).send()
+    })
+
+    fastify.post('/scheduled', async (request, reply) => {
+
+        const scheduleId = z.object({
+            id: z.string()
+        })
+
+        const {id} = scheduleId.parse(request.params)
+
+        const getSchedule = await prisma.agenda.findMany({
+            where: {
+                id
+            }
+        })
+
+        const {horario, dia} = createSchedule.parse(request.params)
+
+        try {
+            await prisma.agendado.create({
+                data: {
+                    id: randomUUID(),
+                    agendadoId: randomUUID(),
+                    
+                    agenda: {
+                        create: {
+                            id,
+                            horario,
+                            dia
+                        }
+                    }
+                }
+            })
+        } catch (error) {
+            throw error
+        }
+
+        return reply.status(201).send()
+    })
+
+    fastify.get('/getAllScheduled', async () => {
+        const allScheduled = await prisma.agendado.findMany()
+
+        return {allScheduled}
     })
 }

@@ -36,23 +36,18 @@ model Servico {
   servicoId String
 
   prestador Prestador @relation(fields: [servicoId], references: [CNPJ])
-
-  categoria Categoria[]
 }
 
 model Categoria {
-  id            String  @id @unique @default(cuid())
-  nomeCategoria String  @unique
+  id            String @id @unique @default(cuid())
+  nomeCategoria String @unique
   descricao     String
-  servicoId     String?
-
-  servico Servico? @relation(fields: [servicoId], references: [id])
 }
 
 model Agenda {
-  id      String   @id @unique @default(cuid())
-  horario DateTime @unique @db.Time()
-  dia     DateTime @db.Date()
+  id      String @id @unique @default(cuid())
+  horario String @unique
+  dia     String
 
   agendaId String?
 
@@ -71,7 +66,7 @@ model AgendaStatus {
 
 model Agendado {
   id         String @id @unique @default(cuid())
-  agendadoId Int
+  agendadoId String
 
   status AgendaStatus[]
 

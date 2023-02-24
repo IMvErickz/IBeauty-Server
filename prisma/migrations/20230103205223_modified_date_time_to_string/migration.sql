@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `agenda` MODIFY `horario` VARCHAR(191) NOT NULL,
+    MODIFY `dia` VARCHAR(191) NOT NULL;
