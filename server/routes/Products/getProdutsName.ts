@@ -3,7 +3,7 @@ import { z } from "zod"
 import { prisma } from "../../lib/prisma"
 
 export async function GetProductsName(fastify: FastifyInstance) {
-    fastify.get('/getProductName', async (request, reply) => {
+    fastify.get('/product/:nomeProduto', async (request, reply) => {
         const nameProduct = z.object({
             nomeProduto: z.string()
         })

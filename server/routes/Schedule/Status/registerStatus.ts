@@ -4,7 +4,7 @@ import { z } from "zod"
 import { prisma } from "../../../lib/prisma"
 
 export async function RegisterStatus(fastify: FastifyInstance) {
-    fastify.post('/createStatus', async (request, reply) => {
+    fastify.post('/status/register', async (request, reply) => {
         
         const createStatus = z.object({
             nomeStatus: z.string(),

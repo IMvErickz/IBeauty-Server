@@ -7,7 +7,7 @@ import { randomUUID } from 'node:crypto'
 
 export async function RegisterSchedule(fastify: FastifyInstance) {
 
-    fastify.post('/createSchedule', async (request, reply) => {
+    fastify.post('/schedule/register', async (request, reply) => {
 
         const createSchedule = z.object({
             horario: z.string(),

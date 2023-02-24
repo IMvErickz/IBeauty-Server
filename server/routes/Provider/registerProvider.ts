@@ -3,7 +3,7 @@ import { prisma } from "../../lib/prisma";
 import {FastifyInstance} from 'fastify'
 
 export async function ResgiterProvider(fastify: FastifyInstance) {
-    fastify.post('/providerRegister', async (request, reply) => {
+    fastify.post('/provider/register', async (request, reply) => {
         const registerProvider = z.object({
             CNPJ: z.string(),
             Nome: z.string(),

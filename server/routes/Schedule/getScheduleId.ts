@@ -4,7 +4,7 @@ import { z } from "zod";
 import { prisma } from "../../lib/prisma";
 
 export async function GetScheduleId(fastify: FastifyInstance) {
-    fastify.post('/scheduled', async (request, reply) => {
+    fastify.post('/scheduled/create', async (request, reply) => {
         
         const createSchedule = z.object({
             horario: z.string(),
