@@ -5,7 +5,7 @@ import {randomUUID} from 'node:crypto'
 
 export async function RegisterService(fastify: FastifyInstance) {
 
-    fastify.post('/registerService', async (request, reply) => {
+    fastify.post('/service/register', async (request, reply) => {
 
         const createService = z.object({
             NomeServico: z.string(),
@@ -15,7 +15,14 @@ export async function RegisterService(fastify: FastifyInstance) {
             servicoId: z.string(),
         })
 
-        const { NomeServico, preco, descricao, img, servicoId } = createService.parse(request.body)
+        const categoryId = z.object({
+            id: z.string(),
+            CNPJ: z.string()
+        })
+
+        const { NomeServico, preco, descricao, img } = createService.parse(request.body)
+
+        const { id, CNPJ } = categoryId.parse(request.params)
         
         try {
             await prisma.servico.create({
@@ -25,35 +32,18 @@ export async function RegisterService(fastify: FastifyInstance) {
                     preco,
                     descricao,
                     img,
-                    servicoId,
+                    categoria: {
+                        connect: {
+                            id
+                        }
+                    },
+                    Prestador: {
+                        connect: {
+                            CNPJ
+                        }
+                    }
                 }
         })
-        } catch (error) {
-            throw error
-        }
-
-        return reply.status(201).send()
-    })
-
-    fastify.get('/allServices', async () => {
-        const getAllServices = await prisma.servico.findMany()
-
-        return {getAllServices}
-    })
-
-    fastify.get('/getServiceName', async (request, reply) => {
-        const serviceName = z.object({
-            NomeServico: z.string()
-        })
-
-        const {NomeServico} = serviceName.parse(request.body)
-        
-        try {
-            await prisma.servico.findMany({
-                where: {
-                    NomeServico
-                }
-            })
         } catch (error) {
             throw error
         }

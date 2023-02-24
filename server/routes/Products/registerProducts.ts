@@ -28,30 +28,4 @@ export async function RegisterProducts(fastify: FastifyInstance) {
 
         return reply.status(201).send()
     })
-
-    fastify.get('/getAllProducts', async () => {
-        const getAllProducts = await prisma.produtos.findMany()
-
-        return {getAllProducts}
-    })
-
-    fastify.get('/getProductName', async (request, reply) => {
-        const nameProduct = z.object({
-            nomeProduto: z.string()
-        })
-
-        const { nomeProduto } = nameProduct.parse(request.body)
-        
-        try {
-           await prisma.produtos.findMany({
-                where: {
-                    nomeProduto
-                }
-            })
-        } catch (error) {
-            throw error
-        }
-
-        return reply.status(201).send
-    })
 }

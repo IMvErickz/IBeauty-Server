@@ -6,6 +6,14 @@ import { RegisterCategory } from "./routes/Category/registerCategory";
 import { RegisterService } from "./routes/Services/registerService";
 import { RegisterProducts } from "./routes/Products/registerProducts";
 import { RegisterSchedule } from "./routes/Schedule/registerSchedule";
+import { GetProductsName } from "./routes/Products/getProdutsName";
+import { GetProducts } from "./routes/Products/getProducts";
+import { GetService } from "./routes/Services/getServices";
+import { GetServiceName } from "./routes/Services/getServiceName";
+import { GetUser } from "./routes/Users/getUser";
+import { GetSchedule } from "./routes/Schedule/getSchedule";
+import { GetScheduleId } from "./routes/Schedule/getScheduleId";
+import { RegisterStatus } from "./routes/Schedule/Status/registerStatus";
 
 
 async function start() {
@@ -24,6 +32,14 @@ const fastify = Fastify({
     await fastify.register(RegisterService)
     await fastify.register(RegisterProducts)
     await fastify.register(RegisterSchedule)
+    await fastify.register(GetProductsName)
+    await fastify.register(GetProducts)
+    await fastify.register(GetService)
+    await fastify.register(GetServiceName)
+    await fastify.register(GetUser)
+    await fastify.register(GetSchedule)
+    await fastify.register(GetScheduleId)
+    await fastify.register(RegisterStatus)
 
     await fastify.listen({port: 4242, host: '0.0.0.0'})
     

@@ -3,7 +3,7 @@ import {FastifyInstance} from 'fastify'
 import { z } from "zod";
 
 export async function RegistrerUserRoute(fastify: FastifyInstance){
-    fastify.post('/userRegister', async (request, reply) => {
+    fastify.post('/user/register', async (request, reply) => {
         const createUser = z.object({
             CPF: z.string(),
             Nome: z.string(),
@@ -28,28 +28,4 @@ export async function RegistrerUserRoute(fastify: FastifyInstance){
         }
         return reply.status(201).send()
     })
-
-    fastify.get('/getUser', async (request, reply) => {
-        const getUser = z.object({
-            CPF: z.string(),
-            email: z.string(),
-        })
-
-        const { CPF } = getUser.parse(request.body)
-        const { email } = getUser.parse(request.params)
-        
-        try {
-            await prisma.cliente.findUnique({
-                where: {
-                    CPF,
-                    email,
-                }
-            })
-        } catch (error) {
-            throw error
-        }
-
-        return reply.status(201).send()
-    })
-     
 }
