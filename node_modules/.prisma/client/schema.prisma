@@ -11,10 +11,12 @@ datasource db {
 }
 
 model Cliente {
-  CPF   String @id @unique @default(cuid())
-  Nome  String
-  email String @unique
-  senha String
+  CPF        String    @id @unique @default(cuid())
+  Nome       String
+  email      String    @unique
+  senha      String
+  Agendado   Agendado? @relation(fields: [agendadoId], references: [id])
+  agendadoId String?
 }
 
 model Prestador {
@@ -23,7 +25,7 @@ model Prestador {
   email String @unique
   Senha String
 
-  servicos Servico[]
+  servico Servico[]
 }
 
 model Servico {
@@ -33,15 +35,19 @@ model Servico {
   descricao   String
   img         String
 
-  servicoId String
-
-  prestador Prestador @relation(fields: [servicoId], references: [CNPJ])
+  categoria     Categoria[]
+  Prestador     Prestador?  @relation(fields: [prestadorCNPJ], references: [CNPJ])
+  prestadorCNPJ String?
 }
 
 model Categoria {
-  id            String @id @unique @default(cuid())
-  nomeCategoria String @unique
+  id            String    @id @unique @default(cuid())
+  nomeCategoria String    @unique
   descricao     String
+  Servico       Servico?  @relation(fields: [servicoId], references: [id])
+  servicoId     String?
+  Produtos      Produtos? @relation(fields: [produtosId], references: [id])
+  produtosId    String?
 }
 
 model Agenda {
@@ -59,9 +65,8 @@ model AgendaStatus {
   nomeStatus String @unique
   descricao  String
 
-  statusId String
-
-  agendado Agendado @relation(fields: [statusId], references: [id])
+  Agendado   Agendado? @relation(fields: [agendadoId], references: [id])
+  agendadoId String?
 }
 
 model Agendado {
@@ -71,6 +76,8 @@ model Agendado {
   status AgendaStatus[]
 
   agenda Agenda[]
+
+  cliente Cliente[]
 }
 
 model Produtos {
@@ -78,4 +85,6 @@ model Produtos {
   nomeProduto String
   preco       Float
   descricao   String
+
+  categoria Categoria[]
 }
