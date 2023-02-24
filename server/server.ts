@@ -1,11 +1,11 @@
 import Fastify from "fastify";
 import Cors from '@fastify/cors'
-import { RegistrerUserRoute } from "./routes/registerUser";
-import { ResgiterProvider } from "./routes/registerProvider";
-import { RegisterCategory } from "./routes/registerCategory";
-import { RegisterService } from "./routes/registerService";
-import { RegisterProducts } from "./routes/registerProducts";
-import { RegisterSchedule } from "./routes/registerSchedule";
+import { RegistrerUserRoute } from "./routes/Users/registerUser";
+import { ResgiterProvider } from "./routes/Provider/registerProvider";
+import { RegisterCategory } from "./routes/Category/registerCategory";
+import { RegisterService } from "./routes/Services/registerService";
+import { RegisterProducts } from "./routes/Products/registerProducts";
+import { RegisterSchedule } from "./routes/Schedule/registerSchedule";
 
 
 async function start() {
