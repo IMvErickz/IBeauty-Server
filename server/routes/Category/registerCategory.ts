@@ -5,7 +5,7 @@ import { z } from 'zod'
 export async function RegisterCategory(fastify: FastifyInstance) {
 
     
-    fastify.get('/getCategory', async (reply) => {
+    fastify.get('/categorys', async () => {
         
        const getCategory =  await prisma.categoria.findMany()
 
