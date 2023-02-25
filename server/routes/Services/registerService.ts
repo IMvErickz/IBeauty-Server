@@ -12,7 +12,6 @@ export async function RegisterService(fastify: FastifyInstance) {
             preco: z.number(),
             descricao: z.string(),
             img: z.string(),
-            servicoId: z.string(),
         })
 
         const categoryId = z.object({

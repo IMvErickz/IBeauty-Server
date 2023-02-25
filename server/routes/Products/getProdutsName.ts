@@ -2,18 +2,18 @@ import { FastifyInstance } from "fastify"
 import { z } from "zod"
 import { prisma } from "../../lib/prisma"
 
-export async function GetProductsName(fastify: FastifyInstance) {
-    fastify.get('/product/:nomeProduto', async (request, reply) => {
+export async function GetProductId(fastify: FastifyInstance) {
+    fastify.get('/product/:id', async (request) => {
         const nameProduct = z.object({
-            nomeProduto: z.string()
+            id: z.string()
         })
 
-        const { nomeProduto } = nameProduct.parse(request.body)
+        const { id } = nameProduct.parse(request.body)
         
         try {
-           await prisma.produtos.findMany({
+           const product = await prisma.produtos.findMany({
                 where: {
-                    nomeProduto
+                    id
                },
                select: {
                    nomeProduto: true,
@@ -25,11 +25,11 @@ export async function GetProductsName(fastify: FastifyInstance) {
                        }
                    }
                }
-            })
+           })
+            
+            return {product}
         } catch (error) {
             throw error
         }
-
-        return reply.status(201).send
     })
 }
