@@ -11,11 +11,11 @@ datasource db {
 }
 
 model Cliente {
-  CPF        String    @id @unique @default(cuid())
+  CPF        String     @id @unique @default(cuid())
   Nome       String
-  email      String    @unique
+  email      String     @unique
   senha      String
-  Agendado   Agendado? @relation(fields: [agendadoId], references: [id])
+  agendado   Agendado[]
   agendadoId String?
 }
 
@@ -50,14 +50,23 @@ model Categoria {
   produtosId    String?
 }
 
-model Agenda {
+model AgendaDia {
+  id         String          @id @unique @default(cuid())
+  dia        String
+  horario    AgendaHorario[]
+  Agendado   Agendado?       @relation(fields: [agendadoId], references: [id])
+  agendadoId String?
+}
+
+model AgendaHorario {
   id      String @id @unique @default(cuid())
   horario String @unique
-  dia     String
 
   agendaId String?
 
-  agendado Agendado? @relation(fields: [agendaId], references: [id])
+  agendado    Agendado?  @relation(fields: [agendaId], references: [id])
+  AgendaDia   AgendaDia? @relation(fields: [agendaDiaId], references: [id])
+  agendaDiaId String?
 }
 
 model AgendaStatus {
@@ -70,14 +79,13 @@ model AgendaStatus {
 }
 
 model Agendado {
-  id         String @id @unique @default(cuid())
-  agendadoId String
-
+  id     String         @id @unique @default(cuid())
   status AgendaStatus[]
 
-  agenda Agenda[]
-
-  cliente Cliente[]
+  agenda        AgendaDia[]
+  AgendaHorario AgendaHorario[]
+  Cliente       Cliente?        @relation(fields: [clienteCPF], references: [CPF])
+  clienteCPF    String?
 }
 
 model Produtos {

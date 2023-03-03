@@ -14,6 +14,8 @@ import { GetUser } from "./routes/Users/getUser";
 import { GetSchedule } from "./routes/Schedule/getSchedule";
 import { GetScheduleId } from "./routes/Schedule/getScheduleId";
 import { RegisterStatus } from "./routes/Schedule/Status/registerStatus";
+import { RegisterDay } from "./routes/Schedule/registerDay";
+import { GetStatus } from "./routes/Schedule/Status/getStatus";
 
 
 async function start() {
@@ -40,6 +42,8 @@ const fastify = Fastify({
     await fastify.register(GetSchedule)
     await fastify.register(GetScheduleId)
     await fastify.register(RegisterStatus)
+    await fastify.register(RegisterDay)
+    await fastify.register(GetStatus)
 
     await fastify.listen({port: 4242, host: '0.0.0.0'})
     

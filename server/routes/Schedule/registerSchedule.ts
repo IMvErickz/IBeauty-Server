@@ -7,22 +7,29 @@ import { randomUUID } from 'node:crypto'
 
 export async function RegisterSchedule(fastify: FastifyInstance) {
 
-    fastify.post('/schedule/register', async (request, reply) => {
+    fastify.post('/schedulewithDay/:DayId', async (request, reply) => {
 
         const createSchedule = z.object({
             horario: z.string(),
-            dia: z.string(),
+        })
+
+        const dayId = z.object({
+            DayId: z.string()
         })
        
-        const { horario, dia } = createSchedule.parse(request.body)
+        const { horario } = createSchedule.parse(request.body)
+        const {DayId} = dayId.parse(request.params)
         
         try {
-            await prisma.agenda.create({
+            await prisma.agendaHorario.create({
                 data: {
                     id: randomUUID(),
                     horario,
-                    dia,
-                    agendaId: randomUUID()
+                    AgendaDia: {
+                        connect: {
+                            id: DayId
+                        }
+                    }
                 }
             })
         } catch (error) {

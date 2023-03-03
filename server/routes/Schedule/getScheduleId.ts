@@ -6,36 +6,41 @@ import { prisma } from "../../lib/prisma";
 export async function GetScheduleId(fastify: FastifyInstance) {
     fastify.post('/scheduled/create', async (request, reply) => {
         
-        const createSchedule = z.object({
-            horario: z.string(),
-            dia: z.string(),
+        const dayId = z.object({
+            DayId: z.string()
         })
 
-        const scheduleId = z.object({
-            id: z.string()
+        const user = z.object({
+            CPF: z.string()
         })
 
-        const {id} = scheduleId.parse(request.params)
-
-        const getSchedule = await prisma.agenda.findMany({
-            where: {
-                id
-            }
+        const status = z.object({
+            IdStatus: z.string()
         })
 
-        const {horario, dia} = createSchedule.parse(request.params)
+        const {IdStatus} = status.parse(request.body)
+
+        const {CPF} = user.parse(request.body)
+
+        const {DayId} = dayId.parse(request.body)
 
         try {
             await prisma.agendado.create({
                 data: {
                     id: randomUUID(),
-                    agendadoId: randomUUID(),
-                    
+                    Cliente: {
+                        connect: {
+                            CPF
+                        }
+                    },
                     agenda: {
-                        create: {
-                            id,
-                            horario,
-                            dia
+                        connect: {
+                            id: DayId
+                        }
+                    },
+                    status: {
+                        connect: {
+                            id: IdStatus
                         }
                     }
                 }
@@ -45,5 +50,19 @@ export async function GetScheduleId(fastify: FastifyInstance) {
         }
 
         return reply.status(201).send()
+    })
+
+    fastify.get('/user/scheduled', async () => {
+        const schedule = await prisma.agendado.findMany({
+            include: {
+                Cliente: true,
+                agenda: true,
+                status: true,
+                AgendaHorario: true
+
+            }
+        })
+
+        return {schedule}
     })
 }
