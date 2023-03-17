@@ -45,7 +45,7 @@ const fastify = Fastify({
     await fastify.register(RegisterDay)
     await fastify.register(GetStatus)
 
-    await fastify.listen({port: 4242, host: '0.0.0.0'})
+    await fastify.listen({port: 3333, host: '0.0.0.0'})
     
 }
 

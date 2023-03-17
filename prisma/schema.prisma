@@ -93,6 +93,7 @@ model Produtos {
   nomeProduto String
   preco       Float
   descricao   String
+  img         String
 
   categoria Categoria[]
 }
