@@ -5,10 +5,18 @@ async function Seed() {
     await prisma.produtos.create({
         data: {
             id: randomUUID(),
-            nomeProduto: "Shampoo anti-caspa",
-            descricao: "Shampoo extra forte",
-            preco: 39.9,
-            img: "https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_auto,fl_progressive,q_auto:eco,w_800/v1/imagens/products/89962/4.png"
+            nomeProduto: "Loção pós-barba",
+            descricao: "Perfeito para um viking",
+            preco: 25.6,
+            img: "https://images.tcdn.com.br/img/img_prod/491336/locao_pos_barba_tradition_viking_100_ml_56_1_20180611102901.jpg"
+        },
+    })
+
+    await prisma.categoria.create({
+        data: {
+            id: randomUUID(),
+            nomeCategoria: "Cabelo em geral",
+            descricao: "Tudo relacionado a cabelo"
         }
     })
 }

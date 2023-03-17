@@ -9,9 +9,10 @@ export async function RegisterProducts(fastify: FastifyInstance) {
             nomeProduto: z.string(),
             preco: z.number(),
             descricao: z.string(),
+            img: z.string()
         })
 
-        const { id, nomeProduto, preco, descricao } = createProduct.parse(request.body)
+        const { id, nomeProduto, preco, descricao, img } = createProduct.parse(request.body)
         
         try {
             await prisma.produtos.create({
@@ -19,7 +20,8 @@ export async function RegisterProducts(fastify: FastifyInstance) {
                 id,
                 nomeProduto,
                 descricao,
-                preco
+                preco,
+                img
             }
         })
         } catch (error) {
