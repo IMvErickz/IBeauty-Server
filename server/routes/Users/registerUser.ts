@@ -9,9 +9,11 @@ export async function RegistrerUserRoute(fastify: FastifyInstance){
             Nome: z.string(),
             email: z.string(),
             senha: z.string(),
+            cep: z.string(),
+            numero: z.string()
         })
 
-        const { CPF, Nome, email, senha } = createUser.parse(request.body)
+        const { CPF, Nome, email, senha, cep, numero } = createUser.parse(request.body)
         
         try {
             await prisma.cliente.create({
@@ -19,7 +21,13 @@ export async function RegistrerUserRoute(fastify: FastifyInstance){
                     email,
                     Nome,
                     senha,
-                    CPF
+                    CPF,
+                    Endereco: {
+                        create: {
+                            cep,
+                            numero
+                        }
+                    }
                 }
             })
         } catch (error) {

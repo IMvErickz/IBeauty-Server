@@ -11,21 +11,27 @@ datasource db {
 }
 
 model Cliente {
-  CPF        String     @id @unique @default(cuid())
-  Nome       String
-  email      String     @unique
-  senha      String
-  agendado   Agendado[]
-  agendadoId String?
+  CPF         String     @id @unique @default(cuid())
+  Nome        String
+  email       String     @unique
+  senha       String
+  agendado    Agendado[]
+  agendadoId  String?
+  Endereco    Endereco?  @relation(fields: [enderecoCep], references: [cep])
+  enderecoCep String?
 }
 
 model Prestador {
-  CNPJ  String @id @unique @default(cuid())
-  Nome  String
-  email String @unique
-  Senha String
+  CNPJ     String @id @unique @default(cuid())
+  Nome     String
+  email    String @unique
+  Senha    String
+  img      String
+  telefone String
 
-  servico Servico[]
+  servico     Servico[]
+  Endereco    Endereco? @relation(fields: [enderecoCep], references: [cep])
+  enderecoCep String?
 }
 
 model Servico {
@@ -96,4 +102,13 @@ model Produtos {
   img         String
 
   categoria Categoria[]
+}
+
+model Endereco {
+  cep    String @id @default(cuid())
+  numero String
+
+  prestador Prestador[]
+
+  cliente Cliente[]
 }
