@@ -14,8 +14,10 @@ export async function GetProviderService(fastify: FastifyInstance) {
      const services = await prisma.prestador.findMany({
             where: {
                 CNPJ
-            },
+         },
+         
          select: {
+             Nome: true,
              servico: {
                  select: {
                      NomeServico: true,
