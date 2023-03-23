@@ -14,7 +14,7 @@ model Cliente {
   CPF         String     @id @unique @default(cuid())
   Nome        String
   email       String     @unique
-  senha       String
+  Senha       String
   agendado    Agendado[]
   agendadoId  String?
   Endereco    Endereco?  @relation(fields: [enderecoCep], references: [cep])

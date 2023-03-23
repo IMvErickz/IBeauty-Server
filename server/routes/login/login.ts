@@ -50,7 +50,7 @@ export async function Login(fastify: FastifyInstance) {
             },
             select: {
                 email: true,
-                senha: true,
+                Senha: true,
                 CPF: true,
                 Nome: true,
                 agendado: {
