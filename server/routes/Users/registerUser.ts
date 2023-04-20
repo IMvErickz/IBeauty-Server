@@ -7,7 +7,7 @@ export async function RegistrerUserRoute(fastify: FastifyInstance){
         const createUser = z.object({
             CPF: z.string(),
             Nome: z.string(),
-            email: z.string(),
+            email: z.string().email(),
             Senha: z.string(),
             cep: z.string(),
             numero: z.string()
