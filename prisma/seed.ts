@@ -15,10 +15,11 @@ async function Seed() {
 
     await prisma.cliente.create({
         data: {
-            email: "erick@live.com",
-            Nome: "Erick",
-            Senha: "erickpsy10",
-            CPF: "4545"
+            email: "",
+            Nome: "",
+            dateBirth: "",
+            Senha: "",
+            telefone: ""
         }
     })
 }
