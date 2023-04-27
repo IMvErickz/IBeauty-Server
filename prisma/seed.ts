@@ -2,24 +2,11 @@ import { randomUUID } from "crypto";
 import { prisma } from "../server/lib/prisma";
 
 async function Seed() {
-    await prisma.prestador.create({
+    await prisma.categoria.create({
         data: {
-            CNPJ: "4075",
-            email: "erickspy2003@gmail.com",
-            Senha: "erickpsy10",
-            img: "oi",
-            Nome: "Salão do Duda",
-            telefone: "545455"
-        }
-    })
-
-    await prisma.cliente.create({
-        data: {
-            email: "",
-            Nome: "",
-            dateBirth: "",
-            Senha: "",
-            telefone: ""
+            id: randomUUID(),
+            nomeCategoria: "Cabelo Feminino",
+            descricao: "Todo tipo de cabelo feminino"
         }
     })
 }
