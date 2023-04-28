@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Servico" ALTER COLUMN "preco" SET DATA TYPE TEXT;

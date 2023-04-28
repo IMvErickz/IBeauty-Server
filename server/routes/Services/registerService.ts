@@ -9,7 +9,7 @@ export async function RegisterService(fastify: FastifyInstance) {
 
         const createService = z.object({
             NomeServico: z.string(),
-            preco: z.number(),
+            preco: z.string(),
             descricao: z.string(),
             img: z.string(),
         })

@@ -7,7 +7,7 @@ export async function RegisterProducts(fastify: FastifyInstance) {
         const createProduct = z.object({
             id: z.string(),
             nomeProduto: z.string(),
-            preco: z.number(),
+            preco: z.string(),
             descricao: z.string(),
             img: z.string()
         })

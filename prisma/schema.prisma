@@ -39,7 +39,7 @@ model Prestador {
 model Servico {
   id          String @id @unique @default(cuid())
   NomeServico String
-  preco       Float
+  preco       String
   descricao   String
   img         String
 
@@ -99,7 +99,7 @@ model Agendado {
 model Produtos {
   id          String @id @unique @default(cuid())
   nomeProduto String
-  preco       Float
+  preco       String
   descricao   String
   img         String
 
