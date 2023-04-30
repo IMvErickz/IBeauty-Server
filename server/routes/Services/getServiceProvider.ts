@@ -18,6 +18,7 @@ export async function GetProviderService(fastify: FastifyInstance) {
          
          select: {
              Nome: true,
+             img: true,
              servico: {
                  select: {
                      NomeServico: true,
