@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../../lib/prisma";
 
 export async function RegisterDay(fastify: FastifyInstance) {
     fastify.post('/day/register', async (request, reply) => {
@@ -19,15 +19,5 @@ export async function RegisterDay(fastify: FastifyInstance) {
         })
 
         reply.status(201).send()
-    })
-
-    fastify.get('/days/hours', async () => {
-        const days = await prisma.agendaDia.findMany({
-            include: {
-                horario: true
-            }
-        })
-
-        return {days}
     })
 }

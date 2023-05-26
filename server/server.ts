@@ -5,16 +5,16 @@ import { ResgiterProvider } from "./routes/Provider/registerProvider";
 import { RegisterCategory } from "./routes/Category/registerCategory";
 import { RegisterService } from "./routes/Services/registerService";
 import { RegisterProducts } from "./routes/Products/registerProducts";
-import { RegisterSchedule } from "./routes/Schedule/registerSchedule";
+import { RegisterSchedule } from "./routes/Schedule/Provider/registerSchedule";
 import { GetProductId } from "./routes/Products/getProdutsName";
 import { GetProducts } from "./routes/Products/getProducts";
 import { GetService } from "./routes/Services/getServices";
 import { GetServiceId } from "./routes/Services/getServiceId";
 import { GetUser } from "./routes/Users/getUser";
-import { GetSchedule } from "./routes/Schedule/getSchedule";
-import { GetScheduleId } from "./routes/Schedule/getScheduleId";
+import { GetSchedule } from "./routes/Schedule/Client/clientScheduling";
+import { Create } from "./routes/Schedule/Client/createClientScheduled";
 import { RegisterStatus } from "./routes/Schedule/Status/registerStatus";
-import { RegisterDay } from "./routes/Schedule/registerDay";
+import { RegisterDay } from "./routes/Schedule/Provider/registerDay";
 import { GetStatus } from "./routes/Schedule/Status/getStatus";
 import { GetProvider } from "./routes/Provider/getProvider";
 import { GetProviderService } from "./routes/Services/getServiceProvider";
@@ -22,6 +22,8 @@ import { Login } from "./routes/login/login";
 import { GetAllUSers } from "./routes/Users/getAllUsers";
 import { UpdateService } from "./routes/Services/updateServices";
 import { UpdateProducts } from "./routes/Products/updateProducts";
+import { GetId } from "./routes/Schedule/Provider/getId";
+import { GetHours } from "./routes/Schedule/Provider/getHours";
 
 
 async function start() {
@@ -46,7 +48,7 @@ const fastify = Fastify({
     await fastify.register(GetServiceId)
     await fastify.register(GetUser)
     await fastify.register(GetSchedule)
-    await fastify.register(GetScheduleId)
+    await fastify.register(Create)
     await fastify.register(RegisterStatus)
     await fastify.register(RegisterDay)
     await fastify.register(GetStatus)
@@ -56,6 +58,8 @@ const fastify = Fastify({
     await fastify.register(GetAllUSers)
     await fastify.register(UpdateService)
     await fastify.register(UpdateProducts)
+    await fastify.register(GetId)
+    await fastify.register(GetHours)
 
     await fastify.listen({port: 3333, host: '0.0.0.0'})
     

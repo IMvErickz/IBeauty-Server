@@ -1,9 +1,9 @@
 import { randomUUID } from "crypto";
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../../lib/prisma";
 
-export async function GetScheduleId(fastify: FastifyInstance) {
+export async function Create(fastify: FastifyInstance) {
     fastify.post('/scheduled/create', async (request, reply) => {
         
         const dayId = z.object({

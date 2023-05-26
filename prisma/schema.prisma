@@ -46,6 +46,7 @@ model Servico {
   categoria     Categoria[]
   Prestador     Prestador?  @relation(fields: [prestadorCNPJ], references: [CNPJ])
   prestadorCNPJ String?
+  agendaDia     AgendaDia[]
 }
 
 model Categoria {
@@ -64,6 +65,8 @@ model AgendaDia {
   horario    AgendaHorario[]
   Agendado   Agendado?       @relation(fields: [agendadoId], references: [id])
   agendadoId String?
+  Servico    Servico?        @relation(fields: [servicoId], references: [id])
+  servicoId  String?
 }
 
 model AgendaHorario {
@@ -72,9 +75,8 @@ model AgendaHorario {
 
   agendaId String?
 
-  agendado    Agendado?  @relation(fields: [agendaId], references: [id])
-  AgendaDia   AgendaDia? @relation(fields: [agendaDiaId], references: [id])
-  agendaDiaId String?
+  agendado  Agendado?   @relation(fields: [agendaId], references: [id])
+  AgendaDia AgendaDia[]
 }
 
 model AgendaStatus {
