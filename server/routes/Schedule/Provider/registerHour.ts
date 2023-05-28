@@ -10,22 +10,22 @@ export async function RegisterHour(fastify: FastifyInstance) {
     fastify.post('/hour/:DayId', async (request, reply) => {
 
         const createSchedule = z.object({
-            horario: z.string(),
+            hour: z.string(),
         })
 
         const dayId = z.object({
             DayId: z.string()
         })
        
-        const { horario } = createSchedule.parse(request.body)
+        const { hour } = createSchedule.parse(request.body)
         const {DayId} = dayId.parse(request.params)
         
         try {
-            await prisma.agendaHorario.create({
+            await prisma.scheduleHour.create({
                 data: {
                     id: randomUUID(),
-                    horario,
-                    AgendaDia: {
+                    hour,
+                    ScheduleDay: {
                         connect: {
                             id: DayId
                         }

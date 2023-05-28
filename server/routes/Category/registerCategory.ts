@@ -7,7 +7,7 @@ export async function RegisterCategory(fastify: FastifyInstance) {
     
     fastify.get('/categorys', async () => {
         
-       const getCategory =  await prisma.categoria.findMany()
+       const getCategory =  await prisma.category.findMany()
 
         return {getCategory}
         

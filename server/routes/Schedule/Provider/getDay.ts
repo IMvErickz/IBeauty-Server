@@ -11,15 +11,15 @@ export async function GetId(fastify: FastifyInstance) {
 
         const {id} = serviceSchema.parse(request.params)
 
-        const day = await prisma.servico.findMany({
+        const day = await prisma.service.findMany({
             where: {
                 id
             },
             select: {
-                agendaDia: {
+                ScheduleDay: {
                     select: {
                         id: true,
-                        dia: true
+                        day: true
                    }
                }
             }

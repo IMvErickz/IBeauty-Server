@@ -6,30 +6,30 @@ export async function ResgiterProvider(fastify: FastifyInstance) {
     fastify.post('/provider/register', async (request, reply) => {
         const registerProvider = z.object({
             CNPJ: z.string(),
-            Nome: z.string(),
+            Name: z.string(),
             email: z.string().email(),
-            Senha: z.string(),
+            Password: z.string(),
             img: z.string(),
-            telefone: z.string(),
+            cellNumber: z.string(),
             cep: z.string(),
-            numero: z.string()
+            number: z.string()
         })
 
-        const { CNPJ, Nome, email, Senha, img, telefone, cep, numero } = registerProvider.parse(request.body)
+        const { CNPJ, Name, email, Password, img, cellNumber, cep, number } = registerProvider.parse(request.body)
         
         try {
-            await prisma.prestador.create({
+            await prisma.provider.create({
                 data: {
                     CNPJ,
-                    Nome,
+                    Name,
                     email,
-                    Senha,
+                    Password,
                     img,
-                    telefone,
-                    Endereco: {
+                    cellNumber,
+                    Address: {
                         create: {
                             cep,
-                            numero
+                            number
                         }
                     }
                 }

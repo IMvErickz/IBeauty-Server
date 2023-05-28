@@ -5,13 +5,13 @@ import { prisma } from "../../lib/prisma";
 export async function UpdateProducts(fastify: FastifyInstance) {
     fastify.put('/updateProducts/:id', async (request, response) => {
         const product = z.object({
-            nomeProduto: z.string(),
-            preco: z.string(),
-            descricao: z.string(),
+            Name: z.string(),
+            price: z.string(),
+            description: z.string(),
             img: z.string(),
         })
 
-        const { descricao, img, nomeProduto, preco } = product.parse(request.body)
+        const { description, img, Name, price } = product.parse(request.body)
         
         const productId = z.object({
             id: z.string()
@@ -20,14 +20,14 @@ export async function UpdateProducts(fastify: FastifyInstance) {
         const { id } = productId.parse(request.params)
         
         try {
-            await prisma.produtos.update({
+            await prisma.products.update({
                 where: {
                     id
                 },
                 data: {
-                    nomeProduto,
-                    preco,
-                    descricao,
+                    Name,
+                    price,
+                    description,
                     img
                 }
             })

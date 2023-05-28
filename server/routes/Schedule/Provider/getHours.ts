@@ -11,9 +11,9 @@ export async function GetHours(fastify: FastifyInstance) {
 
         const { id } = hoursSchema.parse(request.params)
 
-        const days = await prisma.agendaHorario.findMany({
+        const days = await prisma.scheduleHour.findMany({
             where: {
-                AgendaDia: {
+                ScheduleDay: {
                     some: {
                         id
                     }
@@ -21,7 +21,7 @@ export async function GetHours(fastify: FastifyInstance) {
             },
             select: {
                 id: true,
-                horario: true
+                hour: true
             }
         })
 

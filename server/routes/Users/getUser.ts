@@ -13,7 +13,7 @@ export async function GetUser(fastify: FastifyInstance) {
         const { email } = getUser.parse(request.params)
         
         try {
-            await prisma.cliente.findUnique({
+            await prisma.client.findUnique({
                 where: {
                     CPF,
                     email,

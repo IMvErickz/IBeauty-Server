@@ -10,109 +10,109 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Cliente {
-  CPF         String     @id @unique @default(cuid())
-  Nome        String
-  email       String     @unique
-  Senha       String
-  telefone    String
-  dateBirth   String
-  agendado    Agendado[]
-  agendadoId  String?
-  Endereco    Endereco?  @relation(fields: [enderecoCep], references: [cep])
-  enderecoCep String?
+model Client {
+  CPF          String      @id @unique @default(cuid())
+  Name         String
+  email        String      @unique
+  Password     String
+  cellNumber   String
+  dateBirth    String
+  cheduled     Scheduled[]
+  scheduledoId String?
+  Address      Address?    @relation(fields: [AddressCep], references: [cep])
+  AddressCep   String?
 }
 
-model Prestador {
-  CNPJ     String @id @unique @default(cuid())
-  Nome     String
-  email    String @unique
-  Senha    String
-  img      String
-  telefone String
+model Provider {
+  CNPJ       String @id @unique @default(cuid())
+  Name       String
+  email      String @unique
+  Password   String
+  img        String
+  cellNumber String
 
-  servico     Servico[]
-  Endereco    Endereco? @relation(fields: [enderecoCep], references: [cep])
-  enderecoCep String?
+  Service    Service[]
+  Address    Address?  @relation(fields: [AddressCep], references: [cep])
+  AddressCep String?
 }
 
-model Servico {
+model Service {
   id          String @id @unique @default(cuid())
-  NomeServico String
-  preco       String
-  descricao   String
+  NameService String
+  price       String
+  description String
   img         String
 
-  categoria     Categoria[]
-  Prestador     Prestador?  @relation(fields: [prestadorCNPJ], references: [CNPJ])
-  prestadorCNPJ String?
-  agendaDia     AgendaDia[]
+  Category     Category[]
+  Provider     Provider?     @relation(fields: [ProviderCNPJ], references: [CNPJ])
+  ProviderCNPJ String?
+  ScheduleDay  ScheduleDay[]
 }
 
-model Categoria {
-  id            String    @id @unique @default(cuid())
-  nomeCategoria String    @unique
-  descricao     String
-  Servico       Servico?  @relation(fields: [servicoId], references: [id])
-  servicoId     String?
-  Produtos      Produtos? @relation(fields: [produtosId], references: [id])
-  produtosId    String?
+model Category {
+  id           String    @id @unique @default(cuid())
+  NameCategory String    @unique
+  description  String
+  Service      Service?  @relation(fields: [ServiceId], references: [id])
+  ServiceId    String?
+  Products     Products? @relation(fields: [ProductsId], references: [id])
+  ProductsId   String?
 }
 
-model AgendaDia {
-  id         String          @id @unique @default(cuid())
-  dia        String
-  horario    AgendaHorario[]
-  Agendado   Agendado?       @relation(fields: [agendadoId], references: [id])
-  agendadoId String?
-  Servico    Servico[]
-  servicoId  String?
+model ScheduleDay {
+  id          String         @id @unique @default(cuid())
+  day         String
+  hour        ScheduleHour[]
+  scheduled   Scheduled?     @relation(fields: [scheduledId], references: [id])
+  scheduledId String?
+  Service     Service[]
+  ServiceId   String?
 }
 
-model AgendaHorario {
-  id      String @id @unique @default(cuid())
-  horario String @unique
+model ScheduleHour {
+  id   String @id @unique @default(cuid())
+  hour String @unique
 
-  agendaId String?
+  scheduleId String?
 
-  agendado  Agendado?   @relation(fields: [agendaId], references: [id])
-  AgendaDia AgendaDia[]
+  scheduled   Scheduled?    @relation(fields: [scheduleId], references: [id])
+  ScheduleDay ScheduleDay[]
 }
 
-model AgendaStatus {
-  id         String @id @unique @default(cuid())
-  nomeStatus String @unique
-  descricao  String
-
-  Agendado   Agendado? @relation(fields: [agendadoId], references: [id])
-  agendadoId String?
-}
-
-model Agendado {
-  id     String         @id @unique @default(cuid())
-  status AgendaStatus[]
-
-  agenda        AgendaDia[]
-  AgendaHorario AgendaHorario[]
-  Cliente       Cliente?        @relation(fields: [clienteCPF], references: [CPF])
-  clienteCPF    String?
-}
-
-model Produtos {
+model ScheduleStatus {
   id          String @id @unique @default(cuid())
-  nomeProduto String
-  preco       String
-  descricao   String
+  Name        String @unique
+  description String
+
+  scheduled   Scheduled? @relation(fields: [scheduledId], references: [id])
+  scheduledId String?
+}
+
+model Scheduled {
+  id     String           @id @unique @default(cuid())
+  status ScheduleStatus[]
+
+  schedule     ScheduleDay[]
+  ScheduleHour ScheduleHour[]
+  Client       Client?        @relation(fields: [ClientCPF], references: [CPF])
+  ClientCPF    String?
+}
+
+model Products {
+  id          String @id @unique @default(cuid())
+  Name        String
+  price       String
+  description String
   img         String
 
-  categoria Categoria[]
+  Category Category[]
 }
 
-model Endereco {
+model Address {
   cep    String @id @default(cuid())
-  numero String
+  number String
 
-  prestador Prestador[]
+  Provider Provider[]
 
-  cliente Cliente[]
+  Client Client[]
 }

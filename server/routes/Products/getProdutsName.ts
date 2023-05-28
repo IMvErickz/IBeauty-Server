@@ -11,17 +11,17 @@ export async function GetProductId(fastify: FastifyInstance) {
         const { id } = nameProduct.parse(request.body)
         
         try {
-           const product = await prisma.produtos.findMany({
+           const product = await prisma.products.findMany({
                 where: {
                     id
                },
                select: {
-                   nomeProduto: true,
-                   descricao: true,
-                   preco: true,
-                   categoria: {
+                   Name: true,
+                   description: true,
+                   price: true,
+                   Category: {
                        select: {
-                           nomeCategoria: true,
+                           NameCategory: true,
                        }
                    }
                }

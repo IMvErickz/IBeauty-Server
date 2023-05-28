@@ -8,9 +8,9 @@ export async function RegisterService(fastify: FastifyInstance) {
     fastify.post('/service/register', async (request, reply) => {
 
         const createService = z.object({
-            NomeServico: z.string(),
-            preco: z.string(),
-            descricao: z.string(),
+            NameService: z.string(),
+            price: z.string(),
+            description: z.string(),
             img: z.string(),
         })
 
@@ -19,24 +19,24 @@ export async function RegisterService(fastify: FastifyInstance) {
             CNPJ: z.string()
         })
 
-        const { NomeServico, preco, descricao, img } = createService.parse(request.body)
+        const { NameService, price, description, img } = createService.parse(request.body)
 
         const { category, CNPJ } = categoryId.parse(request.body)
         
         try {
-            await prisma.servico.create({
+            await prisma.service.create({
                 data: {
                     id: randomUUID(),
-                    NomeServico,
-                    preco,
-                    descricao,
+                    NameService,
+                    price,
+                    description,
                     img,
-                    categoria: {
+                    Category: {
                         connect: {
                             id: category
                         }
                     },
-                    Prestador: {
+                    Provider: {
                         connect: {
                             CNPJ
                         }

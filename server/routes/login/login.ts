@@ -11,22 +11,29 @@ export async function Login(fastify: FastifyInstance) {
 
         const { email } = user.parse(request.params)
         
-        const userInfo = await prisma.prestador.findMany({
+        const userInfo = await prisma.provider.findMany({
             where: {
                 email
             },
             select: {
                 email: true,
-                Senha: true,
+                Password: true,
                 CNPJ: true,
-                Nome: true,
+                Name: true,
                 img: true,
-                servico: true,
-                telefone: true,
-                Endereco: {
+                Service: {
+                    select: {
+                        id: true,
+                        NameService: true,
+                        price: true,
+                        img: true,
+                    }
+                },
+                cellNumber: true,
+                Address: {
                     select: {
                         cep: true,
-                        numero: true
+                        number: true
                     }
                 }
             }
@@ -44,21 +51,21 @@ export async function Login(fastify: FastifyInstance) {
 
         const { email } = user.parse(request.params)
         
-        const userInfo = await prisma.cliente.findMany({
+        const userInfo = await prisma.client.findMany({
             where: {
                 email
             },
             select: {
                 email: true,
-                Senha: true,
+                Password: true,
                 CPF: true,
-                Nome: true,
-                agendado: {
+                Name: true,
+                cheduled: {
                     select: {
-                        agenda: {
+                        schedule: {
                             select: {
-                                dia: true, 
-                                horario: true,
+                                day: true, 
+                                hour: true,
                                 id: true
                             }
                         },

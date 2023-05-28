@@ -6,13 +6,13 @@ export async function UpdateService(fastify: FastifyInstance) {
     fastify.put('/updateService/:id', async (request, response) => {
 
         const data = z.object({
-            NomeServico: z.string(),
+            NameService: z.string(),
             img: z.string(),
-            preco: z.string(),
-            descricao: z.string()
+            price: z.string(),
+            description: z.string()
         })
 
-        const { NomeServico, descricao, img, preco } = data.parse(request.body)
+        const { NameService, description, img, price } = data.parse(request.body)
         
         const idService = z.object({
             id: z.string()
@@ -21,15 +21,15 @@ export async function UpdateService(fastify: FastifyInstance) {
         const {id} = idService.parse(request.params)
 
         try {
-            const service = await prisma.servico.update({
+            const service = await prisma.service.update({
                 where: {
                     id
                 },
                 data: {
-                    NomeServico,
+                    NameService,
                     img,
-                    preco,
-                    descricao,
+                    price,
+                    description,
                 }
             })
 

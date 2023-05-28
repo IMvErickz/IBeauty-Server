@@ -11,23 +11,23 @@ export async function GetServiceId(fastify: FastifyInstance) {
         const {id} = serviceName.parse(request.params)
         
         try {
-           const service = await prisma.servico.findMany({
+           const service = await prisma.service.findMany({
                 where: {
                     id
                 },
                 select: {
-                    NomeServico: true,
-                    preco: true,
-                    descricao: true,
+                    NameService: true,
+                    price: true,
+                    description: true,
                     img: true,
-                    categoria: {
+                    Category: {
                         select: {
-                            nomeCategoria: true
+                            NameCategory: true
                         }
                     },
-                    Prestador: {
+                    Provider: {
                         select: {
-                            Nome: true,
+                            Name: true,
                         }
                     }
                 }

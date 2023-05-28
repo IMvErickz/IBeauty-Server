@@ -3,7 +3,7 @@ import { prisma } from "../../lib/prisma";
 
 export async function GetProducts(fastify: FastifyInstance) {
     fastify.get('/products', async () => {
-        const getAllProducts = await prisma.produtos.findMany()
+        const getAllProducts = await prisma.products.findMany()
 
         return {getAllProducts}
     })

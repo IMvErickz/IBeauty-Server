@@ -6,21 +6,21 @@ export async function RegisterProducts(fastify: FastifyInstance) {
     fastify.post('/createProduct', async (request, reply) => {
         const createProduct = z.object({
             id: z.string(),
-            nomeProduto: z.string(),
-            preco: z.string(),
-            descricao: z.string(),
+            Name: z.string(),
+            price: z.string(),
+            description: z.string(),
             img: z.string()
         })
 
-        const { id, nomeProduto, preco, descricao, img } = createProduct.parse(request.body)
+        const { id, Name, price, description, img } = createProduct.parse(request.body)
         
         try {
-            await prisma.produtos.create({
+            await prisma.products.create({
             data: {
                 id,
-                nomeProduto,
-                descricao,
-                preco,
+                Name,
+                description,
+                price,
                 img
             }
         })
