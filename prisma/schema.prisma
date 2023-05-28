@@ -65,7 +65,7 @@ model AgendaDia {
   horario    AgendaHorario[]
   Agendado   Agendado?       @relation(fields: [agendadoId], references: [id])
   agendadoId String?
-  Servico    Servico?        @relation(fields: [servicoId], references: [id])
+  Servico    Servico[]
   servicoId  String?
 }
 

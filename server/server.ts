@@ -5,7 +5,7 @@ import { ResgiterProvider } from "./routes/Provider/registerProvider";
 import { RegisterCategory } from "./routes/Category/registerCategory";
 import { RegisterService } from "./routes/Services/registerService";
 import { RegisterProducts } from "./routes/Products/registerProducts";
-import { RegisterSchedule } from "./routes/Schedule/Provider/registerSchedule";
+import { RegisterHour } from "./routes/Schedule/Provider/registerHour";
 import { GetProductId } from "./routes/Products/getProdutsName";
 import { GetProducts } from "./routes/Products/getProducts";
 import { GetService } from "./routes/Services/getServices";
@@ -22,7 +22,7 @@ import { Login } from "./routes/login/login";
 import { GetAllUSers } from "./routes/Users/getAllUsers";
 import { UpdateService } from "./routes/Services/updateServices";
 import { UpdateProducts } from "./routes/Products/updateProducts";
-import { GetId } from "./routes/Schedule/Provider/getId";
+import { GetId } from "./routes/Schedule/Provider/getDay";
 import { GetHours } from "./routes/Schedule/Provider/getHours";
 
 
@@ -41,7 +41,7 @@ const fastify = Fastify({
     await fastify.register(RegisterCategory)
     await fastify.register(RegisterService)
     await fastify.register(RegisterProducts)
-    await fastify.register(RegisterSchedule)
+    await fastify.register(RegisterHour)
     await fastify.register(GetProductId)
     await fastify.register(GetProducts)
     await fastify.register(GetService)

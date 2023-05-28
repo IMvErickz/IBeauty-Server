@@ -25,6 +25,6 @@ export async function GetHours(fastify: FastifyInstance) {
             }
         })
 
-        response.status(201).send({days})
+        return {days}
     })
 }
