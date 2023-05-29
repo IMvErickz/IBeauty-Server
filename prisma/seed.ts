@@ -2,13 +2,27 @@ import { randomUUID } from "crypto";
 import { prisma } from "../server/lib/prisma";
 
 async function Seed() {
-    await prisma.produtos.create({
+    await prisma.category.create({
         data: {
             id: randomUUID(),
-            nomeProduto: 'Shampoo Anti-Caspa',
-            preco: "28,50",
-            descricao: "Shampoo Anti-Caspa para todas as idades",
-            img: "https://www.farmaciaazuleno.com.br/wp-content/uploads/SHAMPOO-ANTICASPA-200ML.jpg"
+            NameCategory: "Cabeleireiro",
+            description: "Salão focado no público masculino"
+        }
+    })
+
+    await prisma.category.create({
+        data: {
+            id: randomUUID(),
+            NameCategory: "Cabeleireira",
+            description: "Salão focado no público feminino"
+        }
+    })
+
+    await prisma.category.create({
+        data: {
+            id: randomUUID(),
+            NameCategory: "Salão de beleza",
+            description: "Salão focado no público feminino"
         }
     })
 }

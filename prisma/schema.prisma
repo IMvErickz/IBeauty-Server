@@ -31,9 +31,10 @@ model Provider {
   img        String
   cellNumber String
 
-  Service    Service[]
-  Address    Address?  @relation(fields: [AddressCep], references: [cep])
-  AddressCep String?
+  Service     Service[]
+  ScheduleDay ScheduleDay[]
+  Address     Address?      @relation(fields: [AddressCep], references: [cep])
+  AddressCep  String?
 }
 
 model Service {
@@ -44,9 +45,8 @@ model Service {
   img         String
 
   Category     Category[]
-  Provider     Provider?     @relation(fields: [ProviderCNPJ], references: [CNPJ])
+  Provider     Provider?  @relation(fields: [ProviderCNPJ], references: [CNPJ])
   ProviderCNPJ String?
-  ScheduleDay  ScheduleDay[]
 }
 
 model Category {
@@ -65,7 +65,7 @@ model ScheduleDay {
   hour        ScheduleHour[]
   scheduled   Scheduled?     @relation(fields: [scheduledId], references: [id])
   scheduledId String?
-  Service     Service[]
+  Provider    Provider[]
   ServiceId   String?
 }
 

@@ -3,17 +3,17 @@ import { prisma } from "../../../lib/prisma";
 import { z } from "zod";
 
 export async function GetId(fastify: FastifyInstance) {
-    fastify.get('/schedule/:id', async (request) => {
+    fastify.get('/schedule/:CNPJ', async (request) => {
 
         const serviceSchema = z.object({
-            id: z.string()
+            CNPJ: z.string()
         })
 
-        const {id} = serviceSchema.parse(request.params)
+        const {CNPJ} = serviceSchema.parse(request.params)
 
-        const day = await prisma.service.findMany({
+        const day = await prisma.provider.findMany({
             where: {
-                id
+                CNPJ
             },
             select: {
                 ScheduleDay: {

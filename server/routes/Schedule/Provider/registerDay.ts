@@ -4,18 +4,28 @@ import { z } from "zod";
 import { prisma } from "../../../lib/prisma";
 
 export async function RegisterDay(fastify: FastifyInstance) {
-    fastify.post('/day/register', async (request, reply) => {
+    fastify.post('/day/:CNPJ', async (request, reply) => {
         const days = z.object({
-            dia: z.string()
+            day: z.string()
+        })
+        const providerSchema = z.object({
+            CNPJ: z.string()
         })
 
-        const { dia } = days.parse(request.body)
+        const {CNPJ} = providerSchema.parse(request.params)
+
+        const { day } = days.parse(request.body)
         
-        await prisma.agendaDia.create({
+        await prisma.scheduleDay.create({
             data: {
                 id: randomUUID(),
-                dia
-            }
+                day,
+                Provider: {
+                    connect: {
+                        CNPJ
+                    }
+                }
+            },
         })
 
         reply.status(201).send()
