@@ -30,6 +30,7 @@ model Provider {
   Password   String
   img        String
   cellNumber String
+  Rating     Float
 
   Service     Service[]
   ScheduleDay ScheduleDay[]
@@ -43,6 +44,7 @@ model Service {
   price       String
   description String
   img         String
+  Rating      Float
 
   Category     Category[]
   Provider     Provider?  @relation(fields: [ProviderCNPJ], references: [CNPJ])
@@ -104,6 +106,7 @@ model Products {
   price       String
   description String
   img         String
+  Rating      Float
 
   Category Category[]
 }

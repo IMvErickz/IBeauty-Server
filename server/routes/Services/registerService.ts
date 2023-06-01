@@ -12,6 +12,7 @@ export async function RegisterService(fastify: FastifyInstance) {
             price: z.string(),
             description: z.string(),
             img: z.string(),
+            Rating: z.number()
         })
 
         const categoryId = z.object({
@@ -19,7 +20,7 @@ export async function RegisterService(fastify: FastifyInstance) {
             CNPJ: z.string()
         })
 
-        const { NameService, price, description, img } = createService.parse(request.body)
+        const { NameService, price, description, img, Rating } = createService.parse(request.body)
 
         const { category, CNPJ } = categoryId.parse(request.body)
         
@@ -31,6 +32,7 @@ export async function RegisterService(fastify: FastifyInstance) {
                     price,
                     description,
                     img,
+                    Rating,
                     Category: {
                         connect: {
                             id: category
