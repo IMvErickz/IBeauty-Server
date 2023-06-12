@@ -2,7 +2,7 @@ import Fastify from "fastify";
 import Cors from '@fastify/cors'
 import { RegistrerUserRoute } from "./routes/Users/registerUser";
 import { ResgiterProvider } from "./routes/Provider/registerProvider";
-import { RegisterCategory } from "./routes/Category/registerCategory";
+import { GetCategory } from "./routes/Category/getCategory";
 import { RegisterService } from "./routes/Services/registerService";
 import { RegisterProducts } from "./routes/Products/registerProducts";
 import { RegisterHour } from "./routes/Schedule/Provider/registerHour";
@@ -24,6 +24,7 @@ import { UpdateService } from "./routes/Services/updateServices";
 import { UpdateProducts } from "./routes/Products/updateProducts";
 import { GetId } from "./routes/Schedule/Provider/getDay";
 import { GetHours } from "./routes/Schedule/Provider/getHours";
+import { RegisterCategory } from "./routes/Category/registerCategory";
 
 
 async function start() {
@@ -38,6 +39,7 @@ const fastify = Fastify({
 
     await fastify.register(RegistrerUserRoute)
     await fastify.register(ResgiterProvider)
+    await fastify.register(GetCategory)
     await fastify.register(RegisterCategory)
     await fastify.register(RegisterService)
     await fastify.register(RegisterProducts)
