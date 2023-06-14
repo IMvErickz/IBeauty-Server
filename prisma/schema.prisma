@@ -11,16 +11,17 @@ datasource db {
 }
 
 model Client {
-  CPF          String      @id @unique @default(cuid())
+  CPF          String         @id @unique @default(cuid())
   Name         String
-  email        String      @unique
+  email        String         @unique
   Password     String
   cellNumber   String
   dateBirth    String
   cheduled     Scheduled[]
   scheduledoId String?
-  Address      Address?    @relation(fields: [AddressCep], references: [cep])
+  Address      Address?       @relation(fields: [AddressCep], references: [cep])
   AddressCep   String?
+  PastService  PastServices[]
 }
 
 model Provider {
@@ -49,6 +50,8 @@ model Service {
   Category     Category[]
   Provider     Provider?  @relation(fields: [ProviderCNPJ], references: [CNPJ])
   ProviderCNPJ String?
+
+  PastService PastServices[]
 }
 
 model Category {
@@ -109,6 +112,14 @@ model Products {
   Rating      Float
 
   Category Category[]
+}
+
+model PastServices {
+  id        String   @id @unique @default(cuid())
+  Service   Service? @relation(fields: [serviceId], references: [id])
+  serviceId String?
+  Client    Client?  @relation(fields: [clientCPF], references: [CPF])
+  clientCPF String?
 }
 
 model Address {

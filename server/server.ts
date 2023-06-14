@@ -25,6 +25,8 @@ import { UpdateProducts } from "./routes/Products/updateProducts";
 import { GetId } from "./routes/Schedule/Provider/getDay";
 import { GetHours } from "./routes/Schedule/Provider/getHours";
 import { RegisterCategory } from "./routes/Category/registerCategory";
+import { GetPastService } from "./routes/Users/getPastService";
+import { SetPastService } from "./routes/Users/setPastService";
 
 
 async function start() {
@@ -62,6 +64,8 @@ const fastify = Fastify({
     await fastify.register(UpdateProducts)
     await fastify.register(GetId)
     await fastify.register(GetHours)
+    await fastify.register(GetPastService)
+    await fastify.register(SetPastService)
 
     await fastify.listen({port: 3333, host: '0.0.0.0'})
     
