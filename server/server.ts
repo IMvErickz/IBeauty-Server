@@ -30,7 +30,8 @@ import { SetPastService } from "./routes/Users/setPastService";
 
 
 async function start() {
-const fastify = Fastify({
+
+    const fastify = Fastify({
         logger: true,
         
     })
