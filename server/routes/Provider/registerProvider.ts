@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { prisma } from "../../lib/prisma";
-import {FastifyInstance} from 'fastify'
+import { FastifyInstance } from 'fastify'
 
 export async function ResgiterProvider(fastify: FastifyInstance) {
     fastify.post('/provider/register', async (request, reply) => {
@@ -13,11 +13,10 @@ export async function ResgiterProvider(fastify: FastifyInstance) {
             cellNumber: z.string(),
             cep: z.string(),
             number: z.string(),
-            Rating: z.number()
         })
 
-        const { CNPJ, Name, email, Password, img, cellNumber, cep, number, Rating } = registerProvider.parse(request.body)
-        
+        const { CNPJ, Name, email, Password, img, cellNumber, cep, number } = registerProvider.parse(request.body)
+
         try {
             await prisma.provider.create({
                 data: {
@@ -27,7 +26,6 @@ export async function ResgiterProvider(fastify: FastifyInstance) {
                     Password,
                     img,
                     cellNumber,
-                    Rating,
                     Address: {
                         create: {
                             cep,

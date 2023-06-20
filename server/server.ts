@@ -1,5 +1,7 @@
 import Fastify from "fastify";
 import Cors from '@fastify/cors'
+import multipart from '@fastify/multipart'
+import { resolve } from 'node:path'
 import { RegistrerUserRoute } from "./routes/Users/registerUser";
 import { ResgiterProvider } from "./routes/Provider/registerProvider";
 import { GetCategory } from "./routes/Category/getCategory";
@@ -27,17 +29,26 @@ import { GetHours } from "./routes/Schedule/Provider/getHours";
 import { RegisterCategory } from "./routes/Category/registerCategory";
 import { GetPastService } from "./routes/Users/getPastService";
 import { SetPastService } from "./routes/Users/setPastService";
+import { Upload } from "./routes/upload/upload";
+import { request } from "node:http";
 
 
 async function start() {
 
     const fastify = Fastify({
         logger: true,
-        
+
     })
 
     await fastify.register(Cors, {
         origin: true,
+    })
+
+    await fastify.register(multipart)
+
+    await fastify.register(require('@fastify/static'), {
+        root: resolve(__dirname, 'uploads'),
+        prefix: '/upload'
     })
 
     await fastify.register(RegistrerUserRoute)
@@ -67,9 +78,11 @@ async function start() {
     await fastify.register(GetHours)
     await fastify.register(GetPastService)
     await fastify.register(SetPastService)
+    await fastify.register(Upload)
 
-    await fastify.listen({port: 3333, host: '0.0.0.0'})
-    
+
+    await fastify.listen({ port: 3333, host: '0.0.0.0' })
+
 }
 
 start()
