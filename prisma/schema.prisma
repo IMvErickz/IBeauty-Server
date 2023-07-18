@@ -52,6 +52,8 @@ model Service {
   ProviderCNPJ String?
 
   PastService PastServices[]
+  Payment     Payment?       @relation(fields: [paymentId], references: [id])
+  paymentId   String?
 }
 
 model Category {
@@ -111,7 +113,9 @@ model Products {
   img         String
   Rating      Float?
 
-  Category Category[]
+  Category  Category[]
+  Payment   Payment?   @relation(fields: [paymentId], references: [id])
+  paymentId String?
 }
 
 model PastServices {
@@ -129,4 +133,14 @@ model Address {
   Provider Provider[]
 
   Client Client[]
+}
+
+model Payment {
+  id        String   @id @unique @default(uuid())
+  createdAt DateTime @default(now())
+  Method    String
+
+  service Service[]
+
+  products Products[]
 }
