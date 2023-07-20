@@ -7,9 +7,13 @@ import { promisify } from "node:util";
 
 const pump = promisify(pipeline)
 
-export async function Upload(fastify: FastifyInstance) {
-    fastify.post('/upload', async (request, response) => {
-        const upload = await request.file()
+export async function Upload(app: FastifyInstance) {
+    app.post('/upload', async (request, response) => {
+        const upload = await request.file({
+            limits: {
+                fileSize: 5242888
+            }
+        })
 
         if (!upload) {
             return response.status(400).send()
@@ -28,8 +32,10 @@ export async function Upload(fastify: FastifyInstance) {
         const fileName = fileId.concat(extension)
 
         const writeStream = createWriteStream(
-            resolve(__dirname, '..', '..', 'uploads', fileName)
+            resolve(__dirname, '..', '..', '..', 'uploads', fileName),
         )
+
+        const ip = '../../../'
 
         await pump(upload.file, writeStream)
 

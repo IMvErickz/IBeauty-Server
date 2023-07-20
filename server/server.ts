@@ -48,8 +48,8 @@ async function start() {
     await fastify.register(multipart)
 
     await fastify.register(require('@fastify/static'), {
-        root: resolve(__dirname, 'uploads'),
-        prefix: '/upload'
+        root: resolve(__dirname, '../uploads'),
+        prefix: '/uploads'
     })
 
     await fastify.register(RegistrerUserRoute)

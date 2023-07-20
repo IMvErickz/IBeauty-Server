@@ -2,11 +2,12 @@ import { randomUUID } from "crypto";
 import { prisma } from "../server/lib/prisma";
 
 async function Seed() {
-    await prisma.category.create({
+    await prisma.provider.update({
+        where: {
+            CNPJ: '40795968000182'
+        },
         data: {
-            id: randomUUID(),
-            NameCategory: "Teste",
-            description: "testando..."
+            img: 'https://graces.com.br/wp-content/uploads/2019/02/o-que-nao-pode-faltar-na-sua-barbearia-equipamentos.jpg'
         }
     })
 }
