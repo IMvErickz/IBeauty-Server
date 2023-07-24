@@ -35,8 +35,6 @@ export async function Upload(app: FastifyInstance) {
             resolve(__dirname, '..', '..', '..', 'uploads', fileName),
         )
 
-        const ip = '../../../'
-
         await pump(upload.file, writeStream)
 
         const fullUrl = request.protocol.concat('://').concat(request.hostname)

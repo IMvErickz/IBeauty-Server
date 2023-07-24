@@ -32,6 +32,7 @@ import { SetPastService } from "./routes/Users/setPastService";
 import { Upload } from "./routes/upload/upload";
 import { request } from "node:http";
 import { Payment } from "./routes/Payments/createPayment";
+import { PastService } from "./routes/Services/pastService";
 
 
 async function start() {
@@ -81,6 +82,7 @@ async function start() {
     await fastify.register(SetPastService)
     await fastify.register(Upload)
     await fastify.register(Payment)
+    await fastify.register(PastService)
 
 
     await fastify.listen({ port: 3333, host: '0.0.0.0' })
