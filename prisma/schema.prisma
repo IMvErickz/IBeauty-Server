@@ -15,9 +15,10 @@ model Client {
   CPF          String?        @unique
   Name         String
   email        String         @unique
-  Password     String
-  cellNumber   String
-  dateBirth    String
+  Password     String?
+  img          String
+  cellNumber   String?
+  dateBirth    String?
   schefuled    Scheduled[]
   scheduledoId String?
   Address      Address?       @relation(fields: [AddressCep], references: [cep])

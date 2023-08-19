@@ -1,80 +1,69 @@
 import { FastifyInstance } from "fastify";
 import { z } from "zod";
 import { prisma } from "../../lib/prisma";
+import { authenticate } from "../../plugins/authenticate";
 
 export async function Login(fastify: FastifyInstance) {
-    fastify.get('/provider/:email', async (request) => {
-        const user = z.object({
-            email: z.string(),
-            //Senha: z.string()
-        })
-
-        const { email } = user.parse(request.params)
-        
-        const userInfo = await prisma.provider.findMany({
-            where: {
-                email
-            },
-            select: {
-                email: true,
-                Password: true,
-                CNPJ: true,
-                Name: true,
-                img: true,
-                Service: {
-                    select: {
-                        id: true,
-                        NameService: true,
-                        price: true,
-                        img: true,
-                    }
-                },
-                cellNumber: true,
-                Address: {
-                    select: {
-                        cep: true,
-                        number: true
-                    }
-                }
-            }
-        })
-
-        return {userInfo}
-        
+    fastify.get('/auth', {
+        onRequest: [authenticate]
+    }, async (request) => {
+        return { user: request.user }
     })
 
-    fastify.get('/client/:email', async (request) => {
-        const user = z.object({
-            email: z.string(),
-            //Senha: z.string()
+    fastify.post('/users', async (request) => {
+
+        const createUserBody = z.object({
+            access_token: z.string(),
         })
 
-        const { email } = user.parse(request.params)
-        
-        const userInfo = await prisma.client.findMany({
-            where: {
-                email
-            },
-            select: {
-                email: true,
-                Password: true,
-                CPF: true,
-                Name: true,
-                cheduled: {
-                    select: {
-                        schedule: {
-                            select: {
-                                day: true, 
-                                hour: true,
-                                id: true
-                            }
-                        },
-                    }
-                }
+        const { access_token } = createUserBody.parse(request.body)
+
+        const userResponse = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${access_token}`
             }
         })
 
-        return {userInfo}
-        
+        const userData = await userResponse.json()
+
+        const userInfoSchema = z.object({
+            id: z.string(),
+            email: z.string().email(),
+            name: z.string(),
+            picture: z.string().url(),
+
+        })
+
+        const userInfo = userInfoSchema.parse(userData)
+
+        let user = await prisma.client.findUnique({
+            where: {
+                email: userInfo.email
+            }
+        })
+
+        if (!user) {
+            user = await prisma.client.create({
+                data: {
+                    id: userInfo.id,
+                    Name: userInfo.name,
+                    email: userInfo.email,
+                    img: userInfo.picture,
+
+                }
+            })
+        }
+
+        const token = fastify.jwt.sign({
+            nome: user.Name,
+            avatarUrl: user.img,
+
+        }, {
+            sub: user.id,
+            expiresIn: '30 days'
+        })
+
+        return { token }
     })
 }

@@ -33,6 +33,8 @@ import { Upload } from "./routes/upload/upload";
 import { request } from "node:http";
 import { Payment } from "./routes/Payments/createPayment";
 import { PastService } from "./routes/Services/pastService";
+import Jwt from '@fastify/jwt'
+
 
 
 async function start() {
@@ -51,6 +53,10 @@ async function start() {
     await fastify.register(require('@fastify/static'), {
         root: resolve(__dirname, '../uploads'),
         prefix: '/uploads'
+    })
+
+    await fastify.register(Jwt, {
+        secret: 'IBeauty',
     })
 
     await fastify.register(RegistrerUserRoute)
