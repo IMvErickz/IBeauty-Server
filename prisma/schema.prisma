@@ -11,13 +11,14 @@ datasource db {
 }
 
 model Client {
-  CPF          String         @id @unique @default(cuid())
+  id           String         @id @unique @default(cuid())
+  CPF          String?        @unique
   Name         String
   email        String         @unique
   Password     String
   cellNumber   String
   dateBirth    String
-  cheduled     Scheduled[]
+  schefuled    Scheduled[]
   scheduledoId String?
   Address      Address?       @relation(fields: [AddressCep], references: [cep])
   AddressCep   String?
@@ -25,7 +26,8 @@ model Client {
 }
 
 model Provider {
-  CNPJ       String @id @unique @default(cuid())
+  id         String @id @unique @default(cuid())
+  CNPJ       String @unique
   Name       String
   email      String @unique
   Password   String
@@ -47,11 +49,11 @@ model Service {
   img         String
   Rating      Float?
 
-  Category     Category[]
-  Provider     Provider?  @relation(fields: [ProviderCNPJ], references: [CNPJ])
-  ProviderCNPJ String?
+  Category Category[]
 
   PastService PastServices[]
+  Provider    Provider?      @relation(fields: [providerId], references: [id])
+  providerId  String?
 }
 
 model Category {
@@ -99,8 +101,8 @@ model Scheduled {
 
   schedule     ScheduleDay[]
   ScheduleHour ScheduleHour[]
-  Client       Client?        @relation(fields: [ClientCPF], references: [CPF])
-  ClientCPF    String?
+  Client       Client?        @relation(fields: [clientId], references: [id])
+  clientId     String?
 }
 
 model Products {
@@ -118,10 +120,10 @@ model PastServices {
   id        String   @id @unique @default(cuid())
   Service   Service? @relation(fields: [serviceId], references: [id])
   serviceId String?
-  Client    Client?  @relation(fields: [clientCPF], references: [CPF])
-  clientCPF String?
   Payment   Payment? @relation(fields: [paymentId], references: [id])
   paymentId String?
+  Client    Client?  @relation(fields: [clientId], references: [id])
+  clientId  String?
 }
 
 model Address {
