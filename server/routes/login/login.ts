@@ -66,4 +66,49 @@ export async function Login(fastify: FastifyInstance) {
 
         return { token }
     })
+
+
+    fastify.post('/login/:auth', async (request, reply) => {
+        const loginSchema = z.object({
+            email: z.string().email(),
+            password: z.string()
+        })
+
+        const authParam = z.object({
+            auth: z.string()
+        })
+
+        const { email, password } = loginSchema.parse(request.body)
+        const { auth } = authParam.parse(request.params)
+
+        if (auth == 'Cliente') {
+            const user = await prisma.client.findUniqueOrThrow({
+                where: {
+                    email
+                },
+            })
+
+            if (user.Password != password) {
+                return reply.status(401).send()
+            }
+            return { user }
+
+        } else if (auth == 'Prestador') {
+            const user = await prisma.provider.findUniqueOrThrow({
+                where: {
+                    email
+                }
+            })
+            if (user.Password != password) {
+                return reply.status(401).send()
+            }
+
+            return { user }
+        }
+
+
+
+
+
+    })
 }
