@@ -1,8 +1,9 @@
 import { prisma } from "../../lib/prisma";
-import {FastifyInstance} from 'fastify'
+import { FastifyInstance } from 'fastify'
+import { randomUUID } from "node:crypto";
 import { z } from "zod";
 
-export async function RegistrerUserRoute(fastify: FastifyInstance){
+export async function RegistrerUserRoute(fastify: FastifyInstance) {
     fastify.post('/user/register', async (request, reply) => {
         const createUser = z.object({
             CPF: z.string(),
@@ -12,18 +13,21 @@ export async function RegistrerUserRoute(fastify: FastifyInstance){
             cellNumber: z.string(),
             cep: z.string(),
             number: z.string(),
-            dateBirth: z.string()
+            dateBirth: z.string(),
+            img: z.string()
 
         })
 
-        const { CPF, Name, email, Password, cep, number, cellNumber, dateBirth } = createUser.parse(request.body)
-        
+        const { CPF, Name, email, Password, cep, number, cellNumber, dateBirth, img } = createUser.parse(request.body)
+
         try {
             await prisma.client.create({
                 data: {
+                    id: randomUUID(),
                     email,
                     Name,
                     Password,
+                    img,
                     cellNumber,
                     CPF,
                     dateBirth,

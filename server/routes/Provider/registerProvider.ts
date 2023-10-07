@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { prisma } from "../../lib/prisma";
 import { FastifyInstance } from 'fastify'
+import { randomUUID } from 'node:crypto';
 
 export async function ResgiterProvider(fastify: FastifyInstance) {
     fastify.post('/provider/register', async (request, reply) => {
@@ -20,6 +21,7 @@ export async function ResgiterProvider(fastify: FastifyInstance) {
         try {
             await prisma.provider.create({
                 data: {
+                    id: randomUUID(),
                     CNPJ,
                     Name,
                     email,
