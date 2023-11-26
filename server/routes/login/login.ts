@@ -93,7 +93,7 @@ export async function Login(fastify: FastifyInstance) {
             }
             return { user }
 
-        } else if (auth == 'Prestador') {
+        } else if (auth == 'Profissional') {
             const user = await prisma.provider.findUniqueOrThrow({
                 where: {
                     email

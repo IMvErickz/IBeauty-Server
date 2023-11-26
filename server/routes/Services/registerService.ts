@@ -16,12 +16,12 @@ export async function RegisterService(fastify: FastifyInstance) {
 
         const categoryId = z.object({
             category: z.string(),
-            CNPJ: z.string()
+            id: z.string()
         })
 
         const { NameService, price, description, img } = createService.parse(request.body)
 
-        const { category, CNPJ } = categoryId.parse(request.body)
+        const { category, id } = categoryId.parse(request.body)
 
         try {
             await prisma.service.create({
@@ -38,7 +38,7 @@ export async function RegisterService(fastify: FastifyInstance) {
                     },
                     Provider: {
                         connect: {
-                            CNPJ
+                            id
                         }
                     }
                 }
