@@ -15,19 +15,18 @@ datasource db {
 }
 
 model Client {
-  id           String         @id @unique @default(cuid())
-  CPF          String?        @unique
-  Name         String
-  email        String         @unique
-  Password     String?
-  img          String
-  cellNumber   String?
-  dateBirth    String?
-  schefuled    Scheduled[]
-  scheduledoId String?
-  Address      Address?       @relation(fields: [AddressCep], references: [id])
-  AddressCep   String?
-  PastService  PastServices[]
+  id          String         @id @unique @default(cuid())
+  CPF         String?        @unique
+  Name        String
+  email       String         @unique
+  Password    String?
+  img         String
+  cellNumber  String?
+  dateBirth   String?
+  Address     Address?       @relation(fields: [AddressCep], references: [id])
+  scheduling  Scheduling[]
+  AddressCep  String?
+  PastService PastServices[]
 }
 
 model Provider {
@@ -41,8 +40,9 @@ model Provider {
   Rating     Float?
 
   Service     Service[]
-  ScheduleDay ScheduleDay[]
-  Address     Address?      @relation(fields: [AddressCep], references: [id])
+  timeInteval TimeInterval[]
+  scheduling  Scheduling[]
+  Address     Address?       @relation(fields: [AddressCep], references: [id])
   AddressCep  String?
 }
 
@@ -71,42 +71,25 @@ model Category {
   ProductsId   String?
 }
 
-model ScheduleDay {
-  id          String         @id @unique @default(cuid())
-  day         String
-  hour        ScheduleHour[]
-  scheduled   Scheduled?     @relation(fields: [scheduledId], references: [id])
-  scheduledId String?
-  Provider    Provider[]
-  ServiceId   String?
+model TimeInterval {
+  id                    String    @id @default(uuid())
+  week_day              Int
+  time_start_in_minutes Int
+  time_end_in_minutes   Int
+  Provider              Provider? @relation(fields: [providerId], references: [id])
+  providerId            String?
 }
 
-model ScheduleHour {
-  id   String @id @unique @default(cuid())
-  hour String @unique
-
-  scheduleId String?
-
-  scheduled   Scheduled?    @relation(fields: [scheduleId], references: [id])
-  ScheduleDay ScheduleDay[]
-}
-
-model ScheduleStatus {
-  id          String @id @unique @default(cuid())
-  Name        String @unique
-  description String
-
-  scheduled   Scheduled? @relation(fields: [scheduledId], references: [id])
-  scheduledId String?
-}
-
-model Scheduled {
-  id     String           @id @unique @default(cuid())
-  status ScheduleStatus[]
-
-  schedule     ScheduleDay[]
-  ScheduleHour ScheduleHour[]
-  Client       Client?        @relation(fields: [clientId], references: [id])
+model Scheduling {
+  id           String    @id @default(uuid())
+  date         DateTime
+  name         String
+  email        String
+  observations String?
+  created_at   DateTime  @default(now())
+  Provider     Provider? @relation(fields: [providerId], references: [id])
+  providerId   String?
+  Client       Client?   @relation(fields: [clientId], references: [id])
   clientId     String?
 }
 
