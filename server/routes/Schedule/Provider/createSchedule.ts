@@ -9,27 +9,33 @@ export async function CreateSchedule(fastify: FastifyInstance) {
         })
 
         const timerIntervalSchema = z.object({
-            time_end_in_minutes: z.number(),
-            time_start_in_minutes: z.number(),
-            week_day: z.number(),
+            intervals: z.array(z.object({
+                endTimeInMinutes: z.number(),
+                startTimeInMinutes: z.number(),
+                weekDay: z.number(),
+            }))
         })
 
         const { id } = providerId.parse(request.params)
 
-        const { time_end_in_minutes, time_start_in_minutes, week_day } = timerIntervalSchema.parse(request.body)
-        
-        await prisma.timeInterval.create({
-            data: {
-                time_end_in_minutes,
-                time_start_in_minutes,
-                week_day,
-                Provider: {
-                    connect: {
-                        id
+        const { intervals } = timerIntervalSchema.parse(request.body)
+
+        await Promise.all(
+            intervals.map((interval) => {
+              return prisma.timeInterval.create({
+                data: {
+                    time_end_in_minutes: interval.endTimeInMinutes,
+                    time_start_in_minutes: interval.startTimeInMinutes,
+                    week_day: interval.weekDay,
+                    Provider: {
+                        connect: {
+                            id
+                        }
                     }
                 }
-            }
-        })
+              })
+            }),
+          )
 
         return reply.status(201).send('success')
     })
