@@ -7,8 +7,8 @@ const blockedDateSchema = z.object({
 })
 
 const blockedDateQueryParams = z.object({
-    year: z.number(),
-    month: z.number()
+    year: z.number().optional(),
+    month: z.number().optional()
 })
 
 
@@ -44,7 +44,7 @@ export async function BlockedDates(fastify: FastifyInstance) {
             LEFT JOIN "TimeInterval" UTI
               ON UTI.week_day = (EXTRACT(DOW FROM S.date) + 1) % 7
 
-              WHERE S.user_id = ${id}
+              WHERE S.provider.id = ${id}
                 AND DATE_FORMAT(S.date, "%Y-%m") = ${`${year}-${month}`}
 
             GROUP BY

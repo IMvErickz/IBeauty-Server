@@ -31,6 +31,7 @@ import { Payment } from "./routes/Payments/createPayment";
 import { PastService } from "./routes/Services/pastService";
 import Jwt from '@fastify/jwt'
 import { CreateSchedule } from "./routes/Schedule/Provider/createSchedule";
+import { BlockedDates } from "./routes/Schedule/Provider/blockedDates";
 
 
 
@@ -83,6 +84,7 @@ async function start() {
     await fastify.register(Payment)
     await fastify.register(PastService)
     await fastify.register(CreateSchedule)
+    await fastify.register(BlockedDates)
 
 
     await fastify.listen({ port: 3333, host: '0.0.0.0' })
