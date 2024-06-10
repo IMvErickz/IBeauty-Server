@@ -4,10 +4,10 @@ CREATE TABLE "Client" (
     "CPF" TEXT,
     "Name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "Password" TEXT NOT NULL,
-    "cellNumber" TEXT NOT NULL,
-    "dateBirth" TEXT NOT NULL,
-    "scheduledoId" TEXT,
+    "Password" TEXT,
+    "img" TEXT NOT NULL,
+    "cellNumber" TEXT,
+    "dateBirth" TEXT,
     "AddressCep" TEXT,
 
     CONSTRAINT "Client_pkey" PRIMARY KEY ("id")
@@ -53,40 +53,28 @@ CREATE TABLE "Category" (
 );
 
 -- CreateTable
-CREATE TABLE "ScheduleDay" (
+CREATE TABLE "TimeInterval" (
     "id" TEXT NOT NULL,
-    "day" TEXT NOT NULL,
-    "scheduledId" TEXT,
-    "ServiceId" TEXT,
+    "week_day" INTEGER NOT NULL,
+    "time_start_in_minutes" INTEGER NOT NULL,
+    "time_end_in_minutes" INTEGER NOT NULL,
+    "providerId" TEXT,
 
-    CONSTRAINT "ScheduleDay_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "TimeInterval_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "ScheduleHour" (
+CREATE TABLE "Scheduling" (
     "id" TEXT NOT NULL,
-    "hour" TEXT NOT NULL,
-    "scheduleId" TEXT,
-
-    CONSTRAINT "ScheduleHour_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "ScheduleStatus" (
-    "id" TEXT NOT NULL,
-    "Name" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "scheduledId" TEXT,
-
-    CONSTRAINT "ScheduleStatus_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Scheduled" (
-    "id" TEXT NOT NULL,
+    "date" TIMESTAMP(3) NOT NULL,
+    "name" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "observations" TEXT,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "providerId" TEXT,
     "clientId" TEXT,
 
-    CONSTRAINT "Scheduled_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Scheduling_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -113,10 +101,11 @@ CREATE TABLE "PastServices" (
 
 -- CreateTable
 CREATE TABLE "Address" (
+    "id" TEXT NOT NULL,
     "cep" TEXT NOT NULL,
     "number" TEXT NOT NULL,
 
-    CONSTRAINT "Address_pkey" PRIMARY KEY ("cep")
+    CONSTRAINT "Address_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -126,18 +115,6 @@ CREATE TABLE "Payment" (
     "Method" TEXT NOT NULL,
 
     CONSTRAINT "Payment_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "_ProviderToScheduleDay" (
-    "A" TEXT NOT NULL,
-    "B" TEXT NOT NULL
-);
-
--- CreateTable
-CREATE TABLE "_ScheduleDayToScheduleHour" (
-    "A" TEXT NOT NULL,
-    "B" TEXT NOT NULL
 );
 
 -- CreateIndex
@@ -168,24 +145,6 @@ CREATE UNIQUE INDEX "Category_id_key" ON "Category"("id");
 CREATE UNIQUE INDEX "Category_NameCategory_key" ON "Category"("NameCategory");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "ScheduleDay_id_key" ON "ScheduleDay"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "ScheduleHour_id_key" ON "ScheduleHour"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "ScheduleHour_hour_key" ON "ScheduleHour"("hour");
-
--- CreateIndex
-CREATE UNIQUE INDEX "ScheduleStatus_id_key" ON "ScheduleStatus"("id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "ScheduleStatus_Name_key" ON "ScheduleStatus"("Name");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Scheduled_id_key" ON "Scheduled"("id");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Products_id_key" ON "Products"("id");
 
 -- CreateIndex
@@ -194,23 +153,11 @@ CREATE UNIQUE INDEX "PastServices_id_key" ON "PastServices"("id");
 -- CreateIndex
 CREATE UNIQUE INDEX "Payment_id_key" ON "Payment"("id");
 
--- CreateIndex
-CREATE UNIQUE INDEX "_ProviderToScheduleDay_AB_unique" ON "_ProviderToScheduleDay"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_ProviderToScheduleDay_B_index" ON "_ProviderToScheduleDay"("B");
-
--- CreateIndex
-CREATE UNIQUE INDEX "_ScheduleDayToScheduleHour_AB_unique" ON "_ScheduleDayToScheduleHour"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_ScheduleDayToScheduleHour_B_index" ON "_ScheduleDayToScheduleHour"("B");
+-- AddForeignKey
+ALTER TABLE "Client" ADD CONSTRAINT "Client_AddressCep_fkey" FOREIGN KEY ("AddressCep") REFERENCES "Address"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Client" ADD CONSTRAINT "Client_AddressCep_fkey" FOREIGN KEY ("AddressCep") REFERENCES "Address"("cep") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Provider" ADD CONSTRAINT "Provider_AddressCep_fkey" FOREIGN KEY ("AddressCep") REFERENCES "Address"("cep") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Provider" ADD CONSTRAINT "Provider_AddressCep_fkey" FOREIGN KEY ("AddressCep") REFERENCES "Address"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Service" ADD CONSTRAINT "Service_providerId_fkey" FOREIGN KEY ("providerId") REFERENCES "Provider"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -222,16 +169,13 @@ ALTER TABLE "Category" ADD CONSTRAINT "Category_ServiceId_fkey" FOREIGN KEY ("Se
 ALTER TABLE "Category" ADD CONSTRAINT "Category_ProductsId_fkey" FOREIGN KEY ("ProductsId") REFERENCES "Products"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ScheduleDay" ADD CONSTRAINT "ScheduleDay_scheduledId_fkey" FOREIGN KEY ("scheduledId") REFERENCES "Scheduled"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "TimeInterval" ADD CONSTRAINT "TimeInterval_providerId_fkey" FOREIGN KEY ("providerId") REFERENCES "Provider"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ScheduleHour" ADD CONSTRAINT "ScheduleHour_scheduleId_fkey" FOREIGN KEY ("scheduleId") REFERENCES "Scheduled"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Scheduling" ADD CONSTRAINT "Scheduling_providerId_fkey" FOREIGN KEY ("providerId") REFERENCES "Provider"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ScheduleStatus" ADD CONSTRAINT "ScheduleStatus_scheduledId_fkey" FOREIGN KEY ("scheduledId") REFERENCES "Scheduled"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Scheduled" ADD CONSTRAINT "Scheduled_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "Client"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Scheduling" ADD CONSTRAINT "Scheduling_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "Client"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PastServices" ADD CONSTRAINT "PastServices_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "Service"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -241,15 +185,3 @@ ALTER TABLE "PastServices" ADD CONSTRAINT "PastServices_paymentId_fkey" FOREIGN 
 
 -- AddForeignKey
 ALTER TABLE "PastServices" ADD CONSTRAINT "PastServices_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "Client"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_ProviderToScheduleDay" ADD CONSTRAINT "_ProviderToScheduleDay_A_fkey" FOREIGN KEY ("A") REFERENCES "Provider"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_ProviderToScheduleDay" ADD CONSTRAINT "_ProviderToScheduleDay_B_fkey" FOREIGN KEY ("B") REFERENCES "ScheduleDay"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_ScheduleDayToScheduleHour" ADD CONSTRAINT "_ScheduleDayToScheduleHour_A_fkey" FOREIGN KEY ("A") REFERENCES "ScheduleDay"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_ScheduleDayToScheduleHour" ADD CONSTRAINT "_ScheduleDayToScheduleHour_B_fkey" FOREIGN KEY ("B") REFERENCES "ScheduleHour"("id") ON DELETE CASCADE ON UPDATE CASCADE;

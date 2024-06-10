@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE "Client" ALTER COLUMN "cellNumber" DROP NOT NULL,
-ALTER COLUMN "dateBirth" DROP NOT NULL;
