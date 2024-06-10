@@ -2,18 +2,17 @@ import { FastifyInstance } from "fastify";
 import { prisma } from "../../../lib/prisma";
 import { z } from "zod";
 
-const blockedDateSchema = z.object({
-    id: z.string()
-})
-
-const blockedDateQueryParams = z.object({
-    year: z.number().optional(),
-    month: z.number().optional()
-})
-
-
 export async function BlockedDates(fastify: FastifyInstance) {
-    fastify.get('/blocked-date/:id', async (request) => {
+  fastify.get('/blocked-date/:id', async (request) => {
+      
+      const blockedDateSchema = z.object({
+        id: z.string()
+      })
+  
+      const blockedDateQueryParams = z.object({
+        year: z.number().optional(),
+        month: z.number().optional()
+      })
 
         const { id } = blockedDateSchema.parse(request.params)
         const { year, month } = blockedDateQueryParams.parse(request.query)
