@@ -10,8 +10,8 @@ export async function BlockedDates(fastify: FastifyInstance) {
       })
   
       const blockedDateQueryParams = z.object({
-        year: z.number().optional(),
-        month: z.number().optional()
+        year: z.string().optional(),
+        month: z.string().optional()
       })
 
         const { id } = blockedDateSchema.parse(request.params)
@@ -32,25 +32,23 @@ export async function BlockedDates(fastify: FastifyInstance) {
             return !availableWeekDays.some(
               (availableWeekDay) => availableWeekDay.week_day === weekDay,
             )
-          })
-        
+        })
+    
         const blockedDatesRaw: Array<{ date: number }> = await prisma.$queryRaw`
-            SELECT
-              EXTRACT(DAY FROM S.date) AS date,
-              COUNT(S.date) AS amount,
-              ((UTI.time_end_in_minutes - UTI.time_start_in_minutes) / 60) AS size
-            FROM "Scheduling" S
-            LEFT JOIN "TimeInterval" UTI
-              ON UTI.week_day = (EXTRACT(DOW FROM S.date) + 1) % 7
-
-              WHERE S.provider.id = ${id}
-                AND DATE_FORMAT(S.date, "%Y-%m") = ${`${year}-${month}`}
-
-            GROUP BY
-              EXTRACT(DAY FROM S.date),
-              ((UTI.time_end_in_minutes - UTI.time_start_in_minutes) / 60)
-            HAVING COUNT(S.date) >= ((UTI.time_end_in_minutes - UTI.time_start_in_minutes) / 60);
-  `;
+      SELECT
+        EXTRACT(DAY FROM S.date) AS date,
+        COUNT(S.date) AS amount,
+        ((COALESCE(UTI.time_end_in_minutes, 0) - COALESCE(UTI.time_start_in_minutes, 0)) / 60) AS size
+      FROM "Scheduling" S
+      LEFT JOIN "TimeInterval" UTI
+        ON UTI.week_day = EXTRACT(DOW FROM S.date)
+      WHERE S."providerId" = ${id}
+        AND TO_CHAR(S.date, 'YYYY-MM') = ${`${year}-${month}`}
+      GROUP BY
+        EXTRACT(DAY FROM S.date),
+        ((COALESCE(UTI.time_end_in_minutes, 0) - COALESCE(UTI.time_start_in_minutes, 0)) / 60)
+      HAVING COUNT(S.date) >= ((COALESCE(UTI.time_end_in_minutes, 0) - COALESCE(UTI.time_start_in_minutes, 0)) / 60);
+    `;
         
         const blockedDates = blockedDatesRaw.map((item) => item.date)
 
