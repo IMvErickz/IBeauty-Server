@@ -65,16 +65,12 @@ export async function Availability(fastify: FastifyInstance) {
             },
             where: {
               providerId: user.id,
-              date: {
-                gte: referenceDate.set('hour', startHour).toDate(),
-                lte: referenceDate.set('hour', endHour).toDate(),
-              },
             },
         })
         
         const availableTimes = possibleTimes.filter((time) => {
             const isTimeBlocked = blockedTimes.some(
-              (blockedTime) => blockedTime.date.getHours() === time,
+              (blockedTime) => blockedTime.date.getHours() + 3 === time,
             )
         
             const isTimeInPast = referenceDate.set('hour', time).isBefore(new Date())

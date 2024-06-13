@@ -56,6 +56,8 @@ model Service {
 
   Category Category[]
 
+  scheduling Scheduling[]
+
   PastService PastServices[]
   Provider    Provider?      @relation(fields: [providerId], references: [id])
   providerId  String?
@@ -91,6 +93,8 @@ model Scheduling {
   providerId   String?
   Client       Client?   @relation(fields: [clientId], references: [id])
   clientId     String?
+  Service      Service?  @relation(fields: [serviceId], references: [id])
+  serviceId    String?
 }
 
 model Products {

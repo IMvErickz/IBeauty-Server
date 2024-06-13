@@ -33,6 +33,9 @@ import Jwt from '@fastify/jwt'
 import { CreateSchedule } from "./routes/Schedule/Provider/createSchedule";
 import { BlockedDates } from "./routes/Schedule/Provider/blockedDates";
 import { Availability } from "./routes/Schedule/Provider/availability";
+import { CreateScheduling } from "./routes/Schedule/Client/createScheduling";
+import { GetProviderById } from "./routes/Provider/getProviderById";
+import { GetUserById } from "./routes/Users/getUserById";
 
 
 
@@ -59,7 +62,9 @@ async function start() {
     })
 
     await fastify.register(RegistrerUserRoute)
+    await fastify.register(GetUserById)
     await fastify.register(ResgiterProvider)
+    await fastify.register(GetProviderById)
     await fastify.register(GetCategory)
     await fastify.register(RegisterCategory)
     await fastify.register(RegisterService)
@@ -87,6 +92,7 @@ async function start() {
     await fastify.register(CreateSchedule)
     await fastify.register(BlockedDates)
     await fastify.register(Availability)
+    await fastify.register(CreateScheduling)
 
 
     await fastify.listen({ port: 3333, host: '0.0.0.0' })
